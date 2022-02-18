@@ -1,0 +1,12 @@
+{
+  "base_url": "",
+  "telegram": {
+    "feeds": [
+    ],
+    "prefix": ""
+  },
+  "wechat": {
+    "feeds": [],
+    "prefix": ""
+  }
+}
