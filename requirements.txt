@@ -1,0 +1,15 @@
+ipython==7.30.0
+Pillow==8.4.0
+display==1.0.0
+jupyter==1.0.0
+aiofiles==0.8.0
+asyncio==3.4.3
+aiojobs==1.0.0
+click==8.0.3
+
+# ipfs:
+pinatapy-vourhey==0.1.3
+
+# excel:
+xlrd==2.0.1
+pyexcel==0.6.7

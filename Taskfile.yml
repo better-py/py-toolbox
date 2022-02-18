@@ -1,0 +1,29 @@
+version: "3"
+
+
+#
+# global vars: https://taskfile.dev/#/usage?id=variables
+#
+vars:
+  VAR1: "some-var"
+
+# global env:
+env:
+  ENV1: testing
+
+# env file:
+dotenv:
+  - .env
+
+
+################################################################################################
+
+
+tasks:
+  install:
+    cmds:
+      - pip3 install -r requirements.txt
+
+  run:
+    cmds:
+      - cd packages/rsshub; python3 run.py
