@@ -1,7 +1,34 @@
+#
+# telegram channels:
+#
 
-# telegram channel:
+# news:
 https://t.me/sspai
-https://t.me/coderzh
+https://t.me/appfans
 https://t.me/kr36001
-https://t.me/remote_cn
+https://t.me/appinnfeed
+https://t.me/jike_collection
+https://t.me/weekly_books
+
+# news: dev
+https://t.me/readhub_cn
 https://t.me/oschina001
+https://t.me/coderzh
+
+
+# job:
+https://t.me/remote_cn
+
+# dev:
+https://t.me/rust_daily_news
+https://t.me/yahnc
+
+# share:
+https://t.me/ruyoblog
+https://t.me/BooksThatMakeYouThink
+
+
+# im:
+https://t.me/Fengyevisaaa
+https://t.me/helpfree8
+

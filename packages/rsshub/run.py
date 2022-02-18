@@ -32,7 +32,6 @@ class RssHubFeedsParser(object):
         """
         data = self.read_txt_file(self.fmt_tg_channel)
         self.save(data)
-        print(f"tg channel: {data}")
 
     def fmt_tg_channel(self, line: str) -> str:
         """
@@ -58,6 +57,7 @@ class RssHubFeedsParser(object):
         if line.find(split_sep) > 0:
             _, item = line.rsplit(split_sep, maxsplit=1)
             s = f"{self.BASE_URL}{prefix}{item}"
+            print(f"rss: {s}")
             return s
         return None
 
@@ -68,15 +68,16 @@ class RssHubFeedsParser(object):
             https://docs.python.org/zh-cn/3/library/typing.html#typing.Callable
         :return:
         """
-        result = []
+        result = set()
         with open(self.f_in_txt, 'r') as f:
             for line in f.readlines():
                 raw = line.strip()
                 # fmt:
                 item = task_fn(raw) if task_fn else raw
                 if item:
-                    result.append(item)
-        return result
+                    result.add(item)
+        print(f"parse count: {len(result)}")
+        return list(result)
 
     def save(self, data):
         """
