@@ -41,9 +41,13 @@ class ETHScaner(object):
 
         api = Account(address=address, api_key=self.etherscan_api_key)
 
-        txs = api.get_all_transactions(offset=10, sort='asc',
-                                       internal=False)
-        print(f"address {address} >  txs: {txs}")
+        # txs = api.get_all_transactions(offset=10, sort='asc', internal=False)
+        txs = api.get_transaction_page(offset=10, sort='desc', internal=False)
+
+        for tx in txs:
+            eth_balance = self.client.fromWei(int(tx['value']), "ether")
+            print(f"\ttx: {tx['blockNumber']} {tx['hash']} {eth_balance}, {tx['from']} -> {tx['to']}")
+            # print(f"\ttx:{tx}")
 
 
 @click.command()
