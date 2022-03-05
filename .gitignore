@@ -329,6 +329,7 @@ tags
 .env
 .envs/*
 !.envs/.local/
+!.env.local
 
 ############################################
 #       user set:
