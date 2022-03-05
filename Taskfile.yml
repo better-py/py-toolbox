@@ -40,6 +40,9 @@ tasks:
       - |
         cd packages/chain; python3 cmd/eth.py \
           --rpc_url=${INFURA_RPC_URL} \
+          --etherscan_api_key=${ETHERSCAN_API_KEY} \
+          --address=${ETH_ADDRESS} \
+        
 
   run:
     cmds:
