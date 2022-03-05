@@ -24,6 +24,23 @@ tasks:
     cmds:
       - pip3 install -r requirements.txt
 
+  init:
+    cmds:
+      - task init:env
+      - task install
+
+  init:env:
+    cmds:
+      - cp .env.local .env
+
+  ##################################################################################################
+
+  run:eth:
+    cmds:
+      - |
+        cd packages/chain; python3 cmd/eth.py \
+          --rpc_url=${INFURA_RPC_URL} \
+
   run:
     cmds:
       - cd packages/rsshub; python3 run.py
