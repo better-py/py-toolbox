@@ -4,8 +4,23 @@
 
 ## packages:
 
-- ✅ [chain](packages/chain/run.py)
-- ✅ [rsshub](packages/rsshub/run.py)
+- ✅ [chain](packages/chain/run.py): 链上交易数据查询
+
+```ruby
+
+# run:
+task chain:run
+
+```
+
+- ✅ [rsshub](packages/rsshub/run.py): rsshub 配置格式化工具
+
+```ruby
+
+# run:
+task rss:run
+
+```
 
 ## env:
 
@@ -13,7 +28,7 @@
 
 - `Python 3.9.9`
 - pyenv:
-  - https://github.com/hhstore/blog/issues/17
+    - https://github.com/hhstore/blog/issues/17
 - go-task
 
 > setup:
@@ -45,7 +60,6 @@ python3
 ```
 
 - install python requirements:
-
 
 ```ruby
 
