@@ -48,6 +48,10 @@ tasks:
     cmds:
       - pip3 install -r requirements.txt
 
+  install:dev:
+    cmds:
+      - pip3 install -r requirements-dev.txt
+
   init:
     cmds:
       - task init:env

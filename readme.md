@@ -21,6 +21,13 @@
 - pyenv:
 
 ```ruby
+# with go-task:
+task setup
+
+#
+# or do:
+#
+
 # install python3.9:
 pyenv install 3.9.9
 
@@ -37,6 +44,13 @@ pyenv local py39-toolbox
 python3
 ```
 
+- install python requirements:
 
+
+```ruby
+
+task install
+
+```
 
 
