@@ -4,6 +4,12 @@
 
 ## packages:
 
+> 小工具启动脚本入口:
+
+- ✅ [Taskfile.yml](Taskfile.yml)
+
+> 小工具列表:
+
 - ✅ [chain](packages/chain/run.py): 链上交易数据查询
 
 ```ruby
@@ -22,15 +28,24 @@ task rss:run
 
 ```
 
+- ✅ [discord-bot](packages/discord-cli/run.py) discord bot, 群消息管理助手
+
+```ruby
+
+# run:
+task discord:run
+
+```
+
 ## env:
 
 > requirements:
 
 - `Python 3.9.9`
 - [pyenv](https://github.com/pyenv/pyenv-installer):
-  - https://github.com/hhstore/blog/issues/17
+    - https://github.com/hhstore/blog/issues/17
 - [go-task](https://github.com/go-task/task)
-  - https://github.com/hhstore/blog/issues/300
+    - https://github.com/hhstore/blog/issues/300
 
 > setup:
 
