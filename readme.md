@@ -27,9 +27,10 @@ task rss:run
 > requirements:
 
 - `Python 3.9.9`
-- pyenv:
-    - https://github.com/hhstore/blog/issues/17
-- go-task
+- [pyenv](https://github.com/pyenv/pyenv-installer):
+  - https://github.com/hhstore/blog/issues/17
+- [go-task](https://github.com/go-task/task)
+  - https://github.com/hhstore/blog/issues/300
 
 > setup:
 

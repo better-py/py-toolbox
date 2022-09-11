@@ -40,6 +40,7 @@ tasks:
 
   setup:
     cmds:
+      - curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
       - pyenv install 3.9.9
       - pyenv virtualenv 3.9.9 py39-toolbox
       - pyenv local py39-toolbox
