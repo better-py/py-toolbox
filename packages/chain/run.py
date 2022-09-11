@@ -37,7 +37,7 @@ class ETHScaner(object):
         print("scan eth:", address, tx_type, tx_count)
 
         transactions = self.client.eth.get_transaction_count(address)
-        print(f"transactions: {transactions}")
+        print(f"transactions: {transactions}, wait...")
 
         api = Account(address=address, api_key=self.etherscan_api_key)
 

@@ -19,3 +19,11 @@ pyexcel==0.6.7
 web3==5.28.0
 py-etherscan-api==0.8.0
 #etherscan-python==2.1.0
+
+
+
+#
+# for packages/discord
+#
+
+discord.py==2.0.1

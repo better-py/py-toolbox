@@ -16,6 +16,12 @@ includes:
     dir: packages/rsshub/
     optional: true #
 
+  discord:
+    taskfile: packages/discord-cli/Taskfile.yml
+    dir: packages/discord-cli/
+    optional: true #
+
+
 ################################################################################################
 
 #
