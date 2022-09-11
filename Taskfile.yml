@@ -1,5 +1,22 @@
 version: "3"
 
+includes:
+  std:
+    taskfile: ~/.local/task/better-sre/config/Taskfile.yml
+    dir: ~/.local/task/better-sre/config # global path
+    optional: true #
+
+  chain:
+    taskfile: packages/chain/Taskfile.yml
+    dir: packages/chain/
+    optional: true #
+
+  rss:
+    taskfile: packages/rsshub/Taskfile.yml
+    dir: packages/rsshub/
+    optional: true #
+
+################################################################################################
 
 #
 # global vars: https://taskfile.dev/#/usage?id=variables
@@ -20,6 +37,13 @@ dotenv:
 
 
 tasks:
+
+  setup:
+    cmds:
+      - pyenv install 3.9.9
+      - pyenv virtualenv 3.9.9 py39-toolbox
+      - pyenv local py39-toolbox
+
   install:
     cmds:
       - pip3 install -r requirements.txt
@@ -37,12 +61,8 @@ tasks:
 
   run:eth:
     cmds:
-      - |
-        cd packages/chain; python3 run.py \
-          --rpc_url=${INFURA_RPC_URL} \
-          --etherscan_api_key=${ETHERSCAN_API_KEY} \
-          --address=${ETH_ADDRESS} \
+      - task: chain:run
 
   run:
     cmds:
-      - cd packages/rsshub; python3 run.py
+      - task: rss:run

@@ -1,0 +1,25 @@
+version: "3"
+
+
+#
+# global vars: https://taskfile.dev/#/usage?id=variables
+#
+vars:
+  VAR1: "some-var"
+
+# global env:
+env:
+  ENV1: testing
+
+
+################################################################################################
+
+
+tasks:
+  run:
+    cmds:
+      - |
+        python3 run.py \
+          --rpc_url=${INFURA_RPC_URL} \
+          --etherscan_api_key=${ETHERSCAN_API_KEY} \
+          --address=${ETH_ADDRESS} \
