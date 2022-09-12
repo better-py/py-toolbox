@@ -36,21 +36,17 @@
 
 ![img_4.png](img_4.png)
 
-
-
-
 </details> 
 
 <details> 
   <summary> 🔋群 channel 历史消息迁移: </summary>
-  <br> 
-
-
+  <br>
 
 > channel 消息迁移:
 
 - 原 channel 历史消息:
-  ![img_5.png](img_5.png)
+
+- ![img_5.png](img_5.png)
 
 
 - 执行迁移命令:
