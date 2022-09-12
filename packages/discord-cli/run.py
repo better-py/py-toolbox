@@ -105,8 +105,8 @@ class DisMateBot(commands.Bot):
             for item in result:
                 v = f"guid=${item.guild}, name=${item.name}, id=${item.id}, category_id=${item.category_id}"
 
-                print(f"channel: ${v}")
-                embed.add_field(name="channel: ", value=v)
+                print(f"chan: ${v}")
+                embed.add_field(name="chan: ", value=v)
 
                 if i % 30 == 0:
                     # 每30个, 发送一条消息
@@ -135,7 +135,7 @@ class DisMateBot(commands.Bot):
 
         @self.command()
         async def group(ctx, group_id: int):
-            """查询指定群的元信息: 包括 channel 列表 和 thread 列表.[输入示例: $group 996337248964456469]
+            """查询指定群的元信息: 包括 chan 列表 和 thread 列表.[输入示例: $group 996337248964456469]
 
             :输入示例: $group 996337248964456469
             :param ctx:
@@ -150,16 +150,16 @@ class DisMateBot(commands.Bot):
             embed.add_field(name="meta", value=result)
 
             for chan in result.channels:
-                embed.add_field(name=f"channel ${chan.id}", value=f"${chan.name}, ${chan.category_id}")
+                embed.add_field(name=f"chan ${chan.id}", value=f"${chan.name}, ${chan.category_id}")
             for thr in result.threads:
                 embed.add_field(name=f"thread ${thr.id}", value=f"${thr.name}, ${thr.parent}")
             await ctx.send(embed=embed)
 
         @self.command()
         async def channel(ctx, channel_id: int):
-            """获取单个频道信息.(命令别名) [输入示例: $channel 877037968701939753]
+            """获取单个频道信息.(命令别名) [输入示例: $chan 877037968701939753]
 
-            :输入示例: $channel 877037968701939753
+            :输入示例: $chan 877037968701939753
             :param ctx:
             :param channel_id:
             :return:
@@ -177,21 +177,70 @@ class DisMateBot(commands.Bot):
             """
             embed = discord.Embed(title=f"channel: ${channel_id}", description="metadata", color=0xeee657)
 
-            channel = self.get_channel(channel_id)
+            chan = self.get_channel(channel_id)
 
             # print:
-            v = f"name:${channel.id}, ${channel.name}, ${channel.category_id}, ${channel.guild}, ${channel.threads}"
+            v = f"name:${chan.id}, ${chan.name}, ${chan.category_id}, ${chan.guild}, ${chan.threads}"
             print(f"channel info: ${v}")
 
-            embed.add_field(name="name", value=channel.name)
-            embed.add_field(name="id", value=channel.id)
-            embed.add_field(name="category id", value=channel.category_id)
-            embed.add_field(name="guild", value=channel.guild)
-            embed.add_field(name="threads", value=channel.threads)
+            embed.add_field(name="name", value=chan.name)
+            embed.add_field(name="id", value=chan.id)
+            embed.add_field(name="category id", value=chan.category_id)
+            embed.add_field(name="guild", value=chan.guild)
+            embed.add_field(name="threads", value=chan.threads)
 
-            for tr in channel.threads:
+            for tr in chan.threads:
                 embed.add_field(name=f"thread: ${tr.name}", value=f"id=${tr.id}")
 
+            await ctx.send(embed=embed)
+
+        @self.command()
+        async def migrate(ctx, from_chan_id: int, to_chan_id: int, to_thread_id: int):
+            await migrate_channel_to_thread(ctx, from_chan_id, to_chan_id, to_thread_id)
+
+        @self.command()
+        async def migrate_channel_to_thread(ctx, from_chan_id: int, to_chan_id: int, to_thread_id: int):
+            embed = discord.Embed(
+                title=f"migrate: ${from_chan_id} ",
+                description=f"migrate chan messages to thread ${to_thread_id}",
+                color=0xeee657,
+            )
+
+            from_chan = self.get_channel(from_chan_id)
+            to_chan = self.get_channel(to_chan_id)
+            to_thread = to_chan.get_thread(to_thread_id)
+
+            print(f"from channel: ${from_chan}, to channel: ${to_chan}, to thread: ${to_thread}")
+
+            # todo x: 关键参数(最后一条消息的 ID), 用于迭代结束判断
+            last_id = from_chan.last_message_id
+            if not last_id:
+                print(f"invalid channel, ${from_chan.last_message_id}, ${from_chan.last_message}")
+                return
+
+            print(f"chan ${from_chan}, last message =${last_id}")
+
+            limit = 100
+            after_at = None
+            msg_id = None
+            count = 0
+            while True:
+                async for msg in from_chan.history(limit=limit, oldest_first=True, after=after_at):
+                    print(f"message content: ${msg.content}, ${msg.created_at}, ${msg.edited_at}, ${msg.id}")
+
+                    # 更新下次迭代的时间戳
+                    after_at = msg.created_at
+                    msg_id = msg.id
+                    count += 1
+
+                # 更新下次迭代的时间戳
+                after_at = after_at
+                print(f"chan messages iter: count=${count}, after at=${after_at}, current msg id:${msg_id}")
+
+                if msg_id == last_id:
+                    break
+
+            embed.add_field(name="count", value=count)
             await ctx.send(embed=embed)
 
         @self.command()
