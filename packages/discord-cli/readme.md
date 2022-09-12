@@ -2,9 +2,43 @@
 
 > 说明:
 
-- ✅消息归档助手: discord 群 channel 归档后, 把channel 内的历史消息, 转发到 目标 thread 下.
+- ✅Discord 群消息归档助手.
+- ✅已支持非常丰富的功能:
+    - ✅ group 群元信息查询
+    - ✅ channel 元信息查询
+    - ✅ thread 元信息查询
+    - ✅ channel 消息历史迁移(到 thread or 另外一个 channel).
 
-> 文档: 
+> 帮助菜单:
+
+![img.png](img.png)
+
+
+<details> 
+  <summary> 🔋迁移 channel 数据到 thread: </summary>
+  <br> 
+
+![img_1.png](img_1.png)
+
+</details> 
+
+<details> 
+  <summary> 🔋查询 group/channel/thread 元信息: </summary>
+  <br> 
+
+> group 群查询:
+
+![img_2.png](img_2.png)
+
+> channel 查询:
+
+![img_3.png](img_3.png)
+
+</details> 
+
+
+
+> 文档:
 
 - ✅https://github.com/hhstore/blog/issues/388
 
