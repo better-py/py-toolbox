@@ -15,14 +15,6 @@
 
 
 <details> 
-  <summary> 🔋迁移 channel 数据到 thread: </summary>
-  <br> 
-
-![img_1.png](img_1.png)
-
-</details> 
-
-<details> 
   <summary> 🔋查询 group/channel/thread 元信息: </summary>
   <br> 
 
@@ -34,8 +26,36 @@
 
 ![img_3.png](img_3.png)
 
+> 指定 channel 查询:
+
+![img_4.png](img_4.png)
+
+
+
+
 </details> 
 
+<details> 
+  <summary> 🔋群 channel 历史消息迁移: </summary>
+  <br> 
+
+
+
+> channel 消息迁移:
+
+- 原 channel 历史消息:
+  ![img_5.png](img_5.png)
+
+
+- 执行迁移命令:
+
+![img_6.png](img_6.png)
+
+- 迁移到 thread 结果:
+
+![img_7.png](img_7.png)
+
+</details> 
 
 
 > 文档:
