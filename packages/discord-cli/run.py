@@ -101,6 +101,12 @@ class DisMateBot(commands.Bot):
 
         @self.command()
         async def group(ctx, group_id: int):
+            """查询指定群的元信息: 包括 channel 列表 和 thread 列表
+            :输入示例: $group 996337248964456469
+            :param ctx:
+            :param group_id:
+            :return:
+            """
             embed = discord.Embed(title=f"group: ${group_id}", description="metadata:", color=0xeee657)
 
             result = self.get_guild(group_id)
