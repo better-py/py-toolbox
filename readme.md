@@ -28,7 +28,11 @@ task rss:run
 
 ```
 
-- ✅ [discord-bot](packages/discord-cli/run.py) discord bot, 群消息管理助手
+- ✅ [discord-bot](packages/discord-cli/readme.md) discord bot, 群消息管理助手, 已支持非常丰富的功能:
+    - ✅ group 群元信息查询
+    - ✅ channel 元信息查询
+    - ✅ thread 元信息查询
+    - ✅ channel 消息历史迁移(到 thread or 另外一个 channel).
 
 ```ruby
 
@@ -36,6 +40,10 @@ task rss:run
 task discord:run
 
 ```
+
+- bot 帮助菜单, 支持的功能列表:
+
+![](packages/discord-cli/img.png)
 
 ## env:
 
