@@ -39,6 +39,11 @@ class DisMateBot(commands.Bot):
             await ctx.send(":smiley: :wave: Hello, there!")
 
         @self.command()
+        async def hello(ctx):
+            print('greet here!')
+            await ctx.send(":smiley: :wave: Hello, there!")
+
+        @self.command()
         async def add(ctx, a: int, b: int):
             await ctx.send(a + b)
 
@@ -77,16 +82,61 @@ class DisMateBot(commands.Bot):
                 i += 1
 
         @self.command()
-        async def groups(ctx):
+        async def all_groups(ctx):
+            """查询全部群信息
+            :输入示例: $all_groups
+
+            :param ctx:
+            :return:
+            """
             embed = discord.Embed(title="all guilds:", description="group guilds:", color=0xeee657)
 
             async for item in self.fetch_guilds():
                 v = f"id=${item.id}, name=${item.name}, ${item.owner_id}"
                 print(f"group: ${v}")
-                
+
                 embed.add_field(name="group: ", value=v)
                 await ctx.send(embed=embed)
                 embed.clear_fields()
+
+        @self.command()
+        async def channel(ctx, channel_id: int):
+            """获取单个频道信息.(命令别名)
+            :输入示例: $channel 877037968701939753
+
+            :param ctx:
+            :param channel_id:
+            :return:
+            """
+            await channel_by_id(ctx, channel_id)
+
+        @self.command()
+        async def channel_by_id(ctx, channel_id: int):
+            """获取单个频道信息.
+            :输入示例: $channel_by_id 877037968701939753
+
+            :param ctx:
+            :param channel_id:
+            :return:
+            """
+            embed = discord.Embed(title=f"channel: ${channel_id}", description="metadata", color=0xeee657)
+
+            channel = self.get_channel(channel_id)
+
+            # print:
+            v = f"name:${channel.id}, ${channel.name}, ${channel.category_id}, ${channel.guild}, ${channel.threads}"
+            print(f"channel info: ${v}")
+
+            embed.add_field(name="name", value=channel.name)
+            embed.add_field(name="id", value=channel.id)
+            embed.add_field(name="category id", value=channel.category_id)
+            embed.add_field(name="guild", value=channel.guild)
+            embed.add_field(name="threads", value=channel.threads)
+
+            for tr in channel.threads:
+                embed.add_field(name=f"thread: ${tr.name}", value=f"id=${tr.id}")
+
+            await ctx.send(embed=embed)
 
         @self.command()
         async def info(ctx):
