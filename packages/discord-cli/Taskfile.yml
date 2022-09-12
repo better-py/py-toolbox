@@ -20,4 +20,5 @@ tasks:
     cmds:
       - |
         python3 run.py \
-          --token=${DISCORD_TOKEN}
+          --token=${DISCORD_TOKEN} \
+          --http_proxy=${HTTP_PROXY}
