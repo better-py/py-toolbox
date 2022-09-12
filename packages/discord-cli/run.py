@@ -11,6 +11,10 @@ class DisMateBot(commands.Bot):
     """
 
     async def on_ready(self):
+        """成功启动, 会打印如下信息, 否则失败
+
+        :return:
+        """
         print('Discord Bot<DisMate> Logged in as:')
         print(self.user.name)
         print(self.user.id)
@@ -28,38 +32,68 @@ class DisMateBot(commands.Bot):
     ##########################################################################################
 
     async def setup_cmds(self):
-        """注册所有 bot 命令:
+        """注册所有 bot 命令: 所有新增 CMD, 都需要在此函数内添加子函数.
+        (discord.py 这个包模块设计有点蠢, 不影响使用)
 
         :return:
         """
 
         @self.command()
         async def echo(ctx):
+            """测试: 输出你好
+
+            :param ctx:
+            :return:
+            """
             print('greet here!')
             await ctx.send(":smiley: :wave: Hello, there!")
 
         @self.command()
         async def hello(ctx):
+            """测试: 输出你好
+
+            :param ctx:
+            :return:
+            """
             print('greet here!')
             await ctx.send(":smiley: :wave: Hello, there!")
 
         @self.command()
         async def add(ctx, a: int, b: int):
+            """计算器 - 加法: [输入示例: $add 22 33]
+
+            :param ctx:
+            :param a:
+            :param b:
+            :return:
+            """
             await ctx.send(a + b)
 
         @self.command()
         async def multiply(ctx, a: int, b: int):
+            """计算器 - 乘法: [输入示例: $multiply 22 33]
+
+            :param ctx:
+            :param a:
+            :param b:
+            :return:
+            """
             await ctx.send(a * b)
 
         @self.command()
         async def cat(ctx):
+            """发送一个 gif 图片
+
+            :param ctx:
+            :return:
+            """
             await ctx.send("https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif")
 
         @self.command()
         async def all_channels(ctx):
-            """cmd = $all_channels
-                查询所有频道
+            """查询所有频道 [输入示例: $all_channels]
 
+            :输入示例: $all_channels
             :param ctx:
             :return:
             """
@@ -83,9 +117,9 @@ class DisMateBot(commands.Bot):
 
         @self.command()
         async def all_groups(ctx):
-            """查询全部群信息
-            :输入示例: $all_groups
+            """查询全部群信息. [输入示例: $all_groups]
 
+            :输入示例: $all_groups
             :param ctx:
             :return:
             """
@@ -101,7 +135,8 @@ class DisMateBot(commands.Bot):
 
         @self.command()
         async def group(ctx, group_id: int):
-            """查询指定群的元信息: 包括 channel 列表 和 thread 列表
+            """查询指定群的元信息: 包括 channel 列表 和 thread 列表.[输入示例: $group 996337248964456469]
+
             :输入示例: $group 996337248964456469
             :param ctx:
             :param group_id:
@@ -122,9 +157,9 @@ class DisMateBot(commands.Bot):
 
         @self.command()
         async def channel(ctx, channel_id: int):
-            """获取单个频道信息.(命令别名)
-            :输入示例: $channel 877037968701939753
+            """获取单个频道信息.(命令别名) [输入示例: $channel 877037968701939753]
 
+            :输入示例: $channel 877037968701939753
             :param ctx:
             :param channel_id:
             :return:
@@ -133,9 +168,9 @@ class DisMateBot(commands.Bot):
 
         @self.command()
         async def channel_by_id(ctx, channel_id: int):
-            """获取单个频道信息.
-            :输入示例: $channel_by_id 877037968701939753
+            """获取单个频道信息. [输入示例: $channel_by_id 877037968701939753]
 
+            :输入示例: $channel_by_id 877037968701939753
             :param ctx:
             :param channel_id:
             :return:
@@ -161,6 +196,11 @@ class DisMateBot(commands.Bot):
 
         @self.command()
         async def info(ctx):
+            """输出 bot 信息. [输入示例: $info]
+
+            :param ctx:
+            :return:
+            """
             embed = discord.Embed(title="nice bot", description="Nicest bot there is ever.", color=0xeee657)
 
             # give info about you here
@@ -178,6 +218,11 @@ class DisMateBot(commands.Bot):
 
         @self.command()
         async def help2(ctx):
+            """自定义帮助菜单. [输入示例: $help2] 与 内置 $help 区别
+
+            :param ctx:
+            :return:
+            """
             embed = discord.Embed(title="nice bot", description="A Very Nice bot. List of commands are:",
                                   color=0xeee657)
 
