@@ -1,6 +1,9 @@
-from typing import Any
+import os
+from collections.abc import Sequence
+from typing import Any, List
 import click
 import discord
+from discord import File
 from discord.ext import commands
 
 
@@ -196,10 +199,28 @@ class DisMateBot(commands.Bot):
 
         @self.command()
         async def migrate(ctx, from_chan_id: int, to_chan_id: int, to_thread_id: int):
+            """频道历史消息迁移, [从 A channel 迁移到 B channel 下的 C thread 中].
+
+            :示例: $migrate 996337249404862547 996337249404862548 1018957028795875389
+            :param ctx:
+            :param from_chan_id:
+            :param to_chan_id:
+            :param to_thread_id:
+            :return:
+            """
             await migrate_channel_to_thread(ctx, from_chan_id, to_chan_id, to_thread_id)
 
         @self.command()
         async def migrate_channel_to_thread(ctx, from_chan_id: int, to_chan_id: int, to_thread_id: int):
+            """频道历史消息迁移, [从 A channel 迁移到 B channel 下的 C thread 中].
+
+            :示例: $migrate 996337249404862547 996337249404862548 1018957028795875389
+            :param ctx:
+            :param from_chan_id:
+            :param to_chan_id:
+            :param to_thread_id:
+            :return:
+            """
             embed = discord.Embed(
                 title=f"migrate: ${from_chan_id} ",
                 description=f"migrate chan messages to thread ${to_thread_id}",
@@ -212,7 +233,7 @@ class DisMateBot(commands.Bot):
 
             print(f"from channel: ${from_chan}, to channel: ${to_chan}, to thread: ${to_thread}")
 
-            # todo x: 关键参数(最后一条消息的 ID), 用于迭代结束判断
+            # todo x: 关键参数(最后一条消息的 ID), 用于迭代结束判断 # 潜在风险, 如果最后一条消息被删除了, 会出现问题
             last_id = from_chan.last_message_id
             if not last_id:
                 print(f"invalid channel, ${from_chan.last_message_id}, ${from_chan.last_message}")
@@ -225,8 +246,54 @@ class DisMateBot(commands.Bot):
             msg_id = None
             count = 0
             while True:
+                # todo x: fix 动态获取最新值
+                # last_id = from_chan.last_message_id
+
+                # 迭代:
                 async for msg in from_chan.history(limit=limit, oldest_first=True, after=after_at):
-                    print(f"message content: ${msg.content}, ${msg.created_at}, ${msg.edited_at}, ${msg.id}")
+                    print(
+                        f"message content: ${msg.content}, ${msg.created_at}, ${msg.edited_at}, ${msg.id}, ${msg.embeds}, ${msg.type}")
+
+                    # 图片消息:
+                    if msg.attachments:
+                        embed = discord.Embed(
+                            title=f"Migrate From: ${from_chan.name} ",
+                            color=0xeee657,
+                        )
+                        embed.add_field(name="Author", value=msg.author)
+                        embed.add_field(name="CreatedAt", value=f"${msg.created_at.date()}")
+                        files = []
+                        for item in msg.attachments:
+                            embed.add_field(name="Attachment", value=item.url, inline=False)
+
+                            # 图片文件
+                            # with os.open(f'{item.id}', mode='wb') as f:
+                            #     f.write(await item.read(use_cached=True))
+                            #     files.append(f)
+
+                        #
+                        # TODO X: 执行消息迁移动作, 嵌入图片文件
+                        #
+                        await to_thread.send(embed=embed)
+                        # await to_thread.send(files=[await item.to_file(use_cached=True) for item in msg.attachments])
+                        # await to_thread.send(files=files)
+
+                    # 纯文本消息:
+                    elif msg.content:
+                        embed = discord.Embed(
+                            title=f"Migrate From: ${from_chan.name} ",
+                            color=0xeee657,
+                        )
+                        embed.add_field(name="Author", value=msg.author)
+                        embed.add_field(name="Content", value=msg.content, inline=False)
+                        embed.add_field(name="CreatedAt", value=f"${msg.created_at.date()}")
+
+                        #
+                        # TODO X: 执行消息迁移动作
+                        #
+                        await to_thread.send(embed=embed)
+                    else:
+                        break
 
                     # 更新下次迭代的时间戳
                     after_at = msg.created_at
@@ -237,6 +304,7 @@ class DisMateBot(commands.Bot):
                 after_at = after_at
                 print(f"chan messages iter: count=${count}, after at=${after_at}, current msg id:${msg_id}")
 
+                # todo x: 潜在 bug, 确保最新的消息, 不被删除(每次执行 migrate, 都发一条新消息)
                 if msg_id == last_id:
                     break
 
