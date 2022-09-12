@@ -51,9 +51,42 @@ class DisMateBot(commands.Bot):
             await ctx.send("https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif")
 
         @self.command()
-        async def query_channels(ctx):
+        async def all_channels(ctx):
+            """cmd = $all_channels
+                查询所有频道
+
+            :param ctx:
+            :return:
+            """
+            embed = discord.Embed(title="all channels", description="group channels:", color=0xeee657)
+
             result = self.get_all_channels()
-            print('channels: ', result)
+
+            i = 0
+            for item in result:
+                v = f"guid=${item.guild}, name=${item.name}, id=${item.id}, category_id=${item.category_id}"
+
+                print(f"channel: ${v}")
+                embed.add_field(name="channel: ", value=v)
+
+                if i % 30 == 0:
+                    # 每30个, 发送一条消息
+                    await ctx.send(embed=embed)
+                    embed.clear_fields()
+
+                i += 1
+
+        @self.command()
+        async def groups(ctx):
+            embed = discord.Embed(title="all guilds:", description="group guilds:", color=0xeee657)
+
+            async for item in self.fetch_guilds():
+                v = f"id=${item.id}, name=${item.name}, ${item.owner_id}"
+                print(f"group: ${v}")
+                
+                embed.add_field(name="group: ", value=v)
+                await ctx.send(embed=embed)
+                embed.clear_fields()
 
         @self.command()
         async def info(ctx):
@@ -70,10 +103,10 @@ class DisMateBot(commands.Bot):
 
             await ctx.send(embed=embed)
 
-        self.remove_command('help')
+        # self.remove_command('help')
 
         @self.command()
-        async def help(ctx):
+        async def help2(ctx):
             embed = discord.Embed(title="nice bot", description="A Very Nice bot. List of commands are:",
                                   color=0xeee657)
 
