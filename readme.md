@@ -45,7 +45,7 @@ task discord:run
 
 ![](packages/discord-cli/img.png)
 
-## env:
+## QuickStart:
 
 > requirements:
 
@@ -91,9 +91,9 @@ task install
 
 ```
 
-> ✅ init `.env` from [](.env.local)
+> init `.env` from [.env.local](.env.local)
 
-- [Taskfile.yml](Taskfile.yml) will auto load `.env` file
+- ✅ [Taskfile.yml](Taskfile.yml) will auto load `.env` file
 
 ```ruby
 # init .env file:
@@ -101,4 +101,21 @@ cp .env.local .env
 
 # edit .env file:
 .env
+```
+
+
+> then run:
+
+
+```ruby
+
+# discord bot:
+task discord:run
+
+# rsshub tools:
+task rss:run
+
+# blockchain tools:
+task chain:run
+
 ```
