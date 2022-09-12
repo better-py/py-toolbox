@@ -30,7 +30,7 @@ class DisMateBot(commands.Bot):
 
     async def on_error(self, event_method: str, /, *args: Any, **kwargs: Any) -> None:
         await self.on_error(event_method, *args, **kwargs)
-        print(f"on error: ${event_method}")
+        print(f"on error: {event_method}")
 
     ##########################################################################################
 
@@ -106,9 +106,9 @@ class DisMateBot(commands.Bot):
 
             i = 0
             for item in result:
-                v = f"guid=${item.guild}, name=${item.name}, id=${item.id}, category_id=${item.category_id}"
+                v = f"guid={item.guild}, name={item.name}, id={item.id}, category_id={item.category_id}"
 
-                print(f"chan: ${v}")
+                print(f"chan: {v}")
                 embed.add_field(name="chan: ", value=v)
 
                 if i % 30 == 0:
@@ -129,8 +129,8 @@ class DisMateBot(commands.Bot):
             embed = discord.Embed(title="all guilds:", description="group guilds:", color=0xeee657)
 
             async for item in self.fetch_guilds():
-                v = f"id=${item.id}, name=${item.name}, ${item.owner_id}"
-                print(f"group: ${v}")
+                v = f"id={item.id}, name={item.name}, {item.owner_id}"
+                print(f"group: {v}")
 
                 embed.add_field(name="group: ", value=v)
                 await ctx.send(embed=embed)
@@ -145,17 +145,17 @@ class DisMateBot(commands.Bot):
             :param group_id:
             :return:
             """
-            embed = discord.Embed(title=f"group: ${group_id}", description="metadata:", color=0xeee657)
+            embed = discord.Embed(title=f"group: {group_id}", description="metadata:", color=0xeee657)
 
             result = self.get_guild(group_id)
-            print(f"group info: ${result.channels}")
+            print(f"group info: {result.channels}")
 
             embed.add_field(name="meta", value=result)
 
             for chan in result.channels:
-                embed.add_field(name=f"chan ${chan.id}", value=f"${chan.name}, ${chan.category_id}")
+                embed.add_field(name=f"chan {chan.id}", value=f"{chan.name}, {chan.category_id}")
             for thr in result.threads:
-                embed.add_field(name=f"thread ${thr.id}", value=f"${thr.name}, ${thr.parent}")
+                embed.add_field(name=f"thread {thr.id}", value=f"{thr.name}, {thr.parent}")
             await ctx.send(embed=embed)
 
         @self.command()
@@ -178,13 +178,13 @@ class DisMateBot(commands.Bot):
             :param channel_id:
             :return:
             """
-            embed = discord.Embed(title=f"channel: ${channel_id}", description="metadata", color=0xeee657)
+            embed = discord.Embed(title=f"channel: {channel_id}", description="metadata", color=0xeee657)
 
             chan = self.get_channel(channel_id)
 
             # print:
-            v = f"name:${chan.id}, ${chan.name}, ${chan.category_id}, ${chan.guild}, ${chan.threads}"
-            print(f"channel info: ${v}")
+            v = f"name: {chan.id}, {chan.name}, {chan.category_id}, {chan.guild}, {chan.threads}"
+            print(f"channel info: {v}")
 
             embed.add_field(name="name", value=chan.name)
             embed.add_field(name="id", value=chan.id)
@@ -193,7 +193,7 @@ class DisMateBot(commands.Bot):
             embed.add_field(name="threads", value=chan.threads)
 
             for tr in chan.threads:
-                embed.add_field(name=f"thread: ${tr.name}", value=f"id=${tr.id}")
+                embed.add_field(name=f"thread: {tr.name}", value=f"id={tr.id}")
 
             await ctx.send(embed=embed)
 
@@ -222,8 +222,8 @@ class DisMateBot(commands.Bot):
             :return:
             """
             embed = discord.Embed(
-                title=f"migrate: ${from_chan_id} ",
-                description=f"migrate chan messages to thread ${to_thread_id}",
+                title=f"migrate: {from_chan_id} ",
+                description=f"migrate chan messages to thread {to_thread_id}",
                 color=0xeee657,
             )
 
@@ -231,15 +231,15 @@ class DisMateBot(commands.Bot):
             to_chan = self.get_channel(to_chan_id)
             to_thread = to_chan.get_thread(to_thread_id)
 
-            print(f"from channel: ${from_chan}, to channel: ${to_chan}, to thread: ${to_thread}")
+            print(f"from channel: {from_chan}, to channel: {to_chan}, to thread: {to_thread}")
 
             # todo x: 关键参数(最后一条消息的 ID), 用于迭代结束判断 # 潜在风险, 如果最后一条消息被删除了, 会出现问题
             last_id = from_chan.last_message_id
             if not last_id:
-                print(f"invalid channel, ${from_chan.last_message_id}, ${from_chan.last_message}")
+                print(f"invalid channel, {from_chan.last_message_id}, {from_chan.last_message}")
                 return
 
-            print(f"chan ${from_chan}, last message =${last_id}")
+            print(f"chan {from_chan}, last message ={last_id}")
 
             limit = 100
             after_at = None
@@ -252,16 +252,16 @@ class DisMateBot(commands.Bot):
                 # 迭代:
                 async for msg in from_chan.history(limit=limit, oldest_first=True, after=after_at):
                     print(
-                        f"message content: ${msg.content}, ${msg.created_at}, ${msg.edited_at}, ${msg.id}, ${msg.embeds}, ${msg.type}")
+                        f"message content: {msg.content}, {msg.created_at}, {msg.edited_at}, {msg.id}, {msg.embeds}, {msg.type}")
 
                     # 图片消息:
                     if msg.attachments:
                         embed = discord.Embed(
-                            title=f"Migrate From: ${from_chan.name} ",
+                            title=f"Migrate From: {from_chan.name} ",
                             color=0xeee657,
                         )
                         embed.add_field(name="Author", value=msg.author)
-                        embed.add_field(name="CreatedAt", value=f"${msg.created_at.date()}")
+                        embed.add_field(name="CreatedAt", value=f"{msg.created_at.date()}")
                         files = []
                         for item in msg.attachments:
                             embed.add_field(name="Attachment", value=item.url, inline=False)
@@ -281,12 +281,12 @@ class DisMateBot(commands.Bot):
                     # 纯文本消息:
                     elif msg.content:
                         embed = discord.Embed(
-                            title=f"Migrate From: ${from_chan.name} ",
+                            title=f"Migrate From: {from_chan.name} ",
                             color=0xeee657,
                         )
                         embed.add_field(name="Author", value=msg.author)
+                        embed.add_field(name="CreatedAt", value=f"{msg.created_at.strftime('%Y-%m-%d %H:%M:%S')}")
                         embed.add_field(name="Content", value=msg.content, inline=False)
-                        embed.add_field(name="CreatedAt", value=f"${msg.created_at.date()}")
 
                         #
                         # TODO X: 执行消息迁移动作
@@ -302,7 +302,7 @@ class DisMateBot(commands.Bot):
 
                 # 更新下次迭代的时间戳
                 after_at = after_at
-                print(f"chan messages iter: count=${count}, after at=${after_at}, current msg id:${msg_id}")
+                print(f"chan messages iter: count={count}, after at={after_at}, current msg id:{msg_id}")
 
                 # todo x: 潜在 bug, 确保最新的消息, 不被删除(每次执行 migrate, 都发一条新消息)
                 if msg_id == last_id:
@@ -360,7 +360,7 @@ class DisMateBot(commands.Bot):
 @click.option("--token", default="", help="discord token")
 @click.option("--http_proxy", default=None, help="discord http proxy")
 def main(token: str, http_proxy: str) -> None:
-    print(f"discord config >> token: ${token}, http proxy: ${http_proxy}")
+    print(f"discord config >> token: {token}, http proxy: {http_proxy}")
 
     intents = discord.Intents.all()
     intents.members = True
