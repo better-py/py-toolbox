@@ -91,4 +91,14 @@ task install
 
 ```
 
+> ✅ init `.env` from [](.env.local)
 
+- [Taskfile.yml](Taskfile.yml) will auto load `.env` file
+
+```ruby
+# init .env file:
+cp .env.local .env
+
+# edit .env file:
+.env
+```
