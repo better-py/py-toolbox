@@ -3,16 +3,22 @@
 > 说明:
 
 - ✅ Discord 群消息归档助手.
+
+## BOT 功能:
+
 - ✅ 已支持非常丰富的功能:
     - ✅ group 群元信息查询
     - ✅ channel 元信息查询
     - ✅ thread 元信息查询
     - ✅ channel 消息历史迁移(到 thread or 另外一个 channel).
 
-> 帮助菜单:
+### 帮助菜单:
+
+- ✅ 帮助菜单, 已给出每个指令的传参示例.
 
 ![img.png](img.png)
 
+### 使用截图: 
 
 <details> 
   <summary> 🔋查询 group/channel/thread 元信息: </summary>
