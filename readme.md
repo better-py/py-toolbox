@@ -49,15 +49,15 @@ task discord:run
 
 > requirements:
 
-- `Python 3.9.9`
-- [pyenv](https://github.com/pyenv/pyenv-installer):
+- ✅ `Python 3.9.9`: 理论上 python3.5+应该都 ok, 自行判断
+- ✅ [pyenv](https://github.com/pyenv/pyenv-installer):
     - https://github.com/hhstore/blog/issues/17
-- [go-task](https://github.com/go-task/task)
+- ✅ [go-task](https://github.com/go-task/task)
     - https://github.com/hhstore/blog/issues/300
 
 > setup:
 
-- pyenv:
+- ✅ pyenv:
 
 ```ruby
 # with go-task:
@@ -83,7 +83,7 @@ pyenv local py39-toolbox
 python3
 ```
 
-- install python requirements:
+- ✅ install python requirements:
 
 ```ruby
 
