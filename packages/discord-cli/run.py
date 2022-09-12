@@ -100,6 +100,21 @@ class DisMateBot(commands.Bot):
                 embed.clear_fields()
 
         @self.command()
+        async def group(ctx, group_id: int):
+            embed = discord.Embed(title=f"group: ${group_id}", description="metadata:", color=0xeee657)
+
+            result = self.get_guild(group_id)
+            print(f"group info: ${result.channels}")
+
+            embed.add_field(name="meta", value=result)
+
+            for chan in result.channels:
+                embed.add_field(name=f"channel ${chan.id}", value=f"${chan.name}, ${chan.category_id}")
+            for thr in result.threads:
+                embed.add_field(name=f"thread ${thr.id}", value=f"${thr.name}, ${thr.parent}")
+            await ctx.send(embed=embed)
+
+        @self.command()
         async def channel(ctx, channel_id: int):
             """获取单个频道信息.(命令别名)
             :输入示例: $channel 877037968701939753
