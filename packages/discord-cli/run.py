@@ -118,6 +118,40 @@ class DisMateBot(commands.Bot):
 
                 i += 1
 
+            if embed.fields:
+                # send last group:
+                await ctx.send(embed=embed)
+
+        @self.command()
+        async def all_category(ctx):
+            """查询所有分类 [输入示例: $all_channels]
+
+            :输入示例: $all_channels
+            :param ctx:
+            :return:
+            """
+            embed = discord.Embed(title="all channels", description="group channels:", color=0xeee657)
+
+            result = self.get_all_channels()
+
+            i = 0
+            for item in result:
+                if i % 30 == 0:
+                    # 每30个, 发送一条消息
+                    await ctx.send(embed=embed)
+                    embed.clear_fields()
+
+                # 目录类型:
+                if not item.category_id:
+                    v = f"guid={item.guild}, name={item.name}, id={item.id}, category_id={item.category_id}"
+                    print(f"chan: {v}")
+                    embed.add_field(name="category: ", value=v)
+                    i += 1
+
+            if embed.fields:
+                # send last group:
+                await ctx.send(embed=embed)
+
         @self.command()
         async def all_groups(ctx):
             """查询全部群信息. [输入示例: $all_groups]
@@ -151,11 +185,41 @@ class DisMateBot(commands.Bot):
             print(f"group info: {result.channels}")
 
             embed.add_field(name="meta", value=result)
+            embed.add_field(name="channel count", value=len(result.channels))
+            embed.add_field(name="thread count", value=len(result.threads))
 
             for chan in result.channels:
-                embed.add_field(name=f"chan {chan.id}", value=f"{chan.name}, {chan.category_id}")
-            for thr in result.threads:
-                embed.add_field(name=f"thread {thr.id}", value=f"{thr.name}, {thr.parent}")
+                # 目录类型:
+                if not chan.category_id:
+                    embed.add_field(name=f"category {chan.id}", value=f"{chan.name}")
+
+            # for thr in result.threads:
+            #     embed.add_field(name=f"thread {thr.id}", value=f"{thr.name}, {thr.parent}")
+            await ctx.send(embed=embed)
+
+        @self.command()
+        async def category(ctx, group_id: int, category_id: int):
+            """查询指定群+分类的频道列表: [输入示例: $group 996337248964456469]
+
+            :输入示例: $group 996337248964456469
+            :param ctx:
+            :param group_id: 群 ID
+            :param category_id: 分类 ID
+            :return:
+            """
+            embed = discord.Embed(title=f"group: {group_id}", color=0xeee657)
+
+            result = self.get_guild(group_id)
+
+            print(f"group info: {result.channels}")
+
+            embed.add_field(name="meta", value=result)
+            embed.add_field(name="category", value=category_id)
+            embed.add_field(name="channel count:", value=len(result.channels), inline=False)
+
+            for chan in result.channels:
+                if chan.category_id == category_id:
+                    embed.add_field(name=f"channel {chan.id}", value=f"{chan.name}, {chan.category_id}")
             await ctx.send(embed=embed)
 
         @self.command()
@@ -175,7 +239,7 @@ class DisMateBot(commands.Bot):
 
             :输入示例: $channel_by_id 877037968701939753
             :param ctx:
-            :param channel_id:
+            :param channel_id: 频道 ID
             :return:
             """
             embed = discord.Embed(title=f"channel: {channel_id}", description="metadata", color=0xeee657)
