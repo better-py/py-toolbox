@@ -312,12 +312,12 @@ class DisMateBot(commands.Bot):
                             color=0xdb1c8b,
                             type="rich",
                             title=f"Migrate From: {from_chan.name}",
-                            description=f"{msg.author} at: {msg.created_at.strftime('%Y-%m-%d %H:%M:%S')}",
+                            description=f"{msg.author} 👏 at: {msg.created_at.strftime('%Y-%m-%d %H:%M:%S')}",
                         )
 
                         files = []
                         for item in msg.attachments:
-                            embed.add_field(name="Attachment", value=item.url, inline=False)
+                            embed.add_field(name="Attachment 💎", value=item.url, inline=False)
 
                             # 图片文件
                             # with os.open(f'{item.id}', mode='wb') as f:
@@ -337,9 +337,9 @@ class DisMateBot(commands.Bot):
                             color=0xeee657,
                             type="rich",
                             title=f"Migrate From: {from_chan.name}",
-                            description=f"{msg.author} at: {msg.created_at.strftime('%Y-%m-%d %H:%M:%S')}",
+                            description=f"{msg.author} 👏 at: {msg.created_at.strftime('%Y-%m-%d %H:%M:%S')}",
                         )
-                        embed.add_field(name="Content", value=msg.content, inline=False)
+                        embed.add_field(name="Content 📗️", value=msg.content, inline=False)
 
                         #
                         # TODO X: 执行消息迁移动作
