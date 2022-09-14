@@ -224,17 +224,6 @@ class DisMateBot(commands.Bot):
 
         @self.command()
         async def channel(ctx, channel_id: int):
-            """获取单个频道信息.(命令别名) [输入示例: $chan 877037968701939753]
-
-            :输入示例: $chan 877037968701939753
-            :param ctx:
-            :param channel_id:
-            :return:
-            """
-            await channel_by_id(ctx, channel_id)
-
-        @self.command()
-        async def channel_by_id(ctx, channel_id: int):
             """获取单个频道信息. [输入示例: $channel_by_id 877037968701939753]
 
             :输入示例: $channel_by_id 877037968701939753
@@ -253,8 +242,7 @@ class DisMateBot(commands.Bot):
             embed.add_field(name="name", value=chan.name)
             embed.add_field(name="id", value=chan.id)
             embed.add_field(name="category id", value=chan.category_id)
-            embed.add_field(name="guild", value=chan.guild)
-            embed.add_field(name="threads", value=chan.threads)
+            embed.add_field(name="guild", value=chan.guild, inline=False)
 
             for tr in chan.threads:
                 embed.add_field(name=f"thread: {tr.name}", value=f"id={tr.id}")
@@ -321,11 +309,11 @@ class DisMateBot(commands.Bot):
                     # 图片消息:
                     if msg.attachments:
                         embed = discord.Embed(
-                            title=f"Migrate From: {from_chan.name} ",
-                            color=0xeee657,
+                            color=0xdb1c8b,
+                            title=f"Migrate From: {from_chan.name}",
+                            description=f"{msg.author} at: {msg.created_at.strftime('%Y-%m-%d %H:%M:%S')}",
                         )
-                        embed.add_field(name="Author", value=msg.author)
-                        embed.add_field(name="CreatedAt", value=f"{msg.created_at.date()}")
+
                         files = []
                         for item in msg.attachments:
                             embed.add_field(name="Attachment", value=item.url, inline=False)
@@ -345,11 +333,10 @@ class DisMateBot(commands.Bot):
                     # 纯文本消息:
                     elif msg.content:
                         embed = discord.Embed(
-                            title=f"Migrate From: {from_chan.name} ",
                             color=0xeee657,
+                            title=f"Migrate From: {from_chan.name}",
+                            description=f"{msg.author} at: {msg.created_at.strftime('%Y-%m-%d %H:%M:%S')}",
                         )
-                        embed.add_field(name="Author", value=msg.author)
-                        embed.add_field(name="CreatedAt", value=f"{msg.created_at.strftime('%Y-%m-%d %H:%M:%S')}")
                         embed.add_field(name="Content", value=msg.content, inline=False)
 
                         #
