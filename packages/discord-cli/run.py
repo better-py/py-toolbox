@@ -310,6 +310,7 @@ class DisMateBot(commands.Bot):
                     if msg.attachments:
                         embed = discord.Embed(
                             color=0xdb1c8b,
+                            type="rich",
                             title=f"Migrate From: {from_chan.name}",
                             description=f"{msg.author} at: {msg.created_at.strftime('%Y-%m-%d %H:%M:%S')}",
                         )
@@ -334,6 +335,7 @@ class DisMateBot(commands.Bot):
                     elif msg.content:
                         embed = discord.Embed(
                             color=0xeee657,
+                            type="rich",
                             title=f"Migrate From: {from_chan.name}",
                             description=f"{msg.author} at: {msg.created_at.strftime('%Y-%m-%d %H:%M:%S')}",
                         )
