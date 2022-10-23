@@ -22,7 +22,7 @@ class CSVParser(object):
         self.df_b = None
 
         # 目标列：
-        self.pick_cols_name = '住院号'
+        self.pick_col_name = '住院号'
 
     @staticmethod
     def pd_read(filename: str):
@@ -103,7 +103,7 @@ class CSVParser(object):
 
     def task_calc_avg(self):
         # 根据住院号，筛选同一个病人记录， 批量计算平均值， 并写入文件
-        data = self.df_b.groupby(self.pick_cols_name).mean(numeric_only=True).round(2)
+        data = self.df_b.groupby(self.pick_col_name).mean(numeric_only=True).round(2)
         data.to_excel(self.outfile, sheet_name='avg')
         print(f"group calc: \n{data}")
 
