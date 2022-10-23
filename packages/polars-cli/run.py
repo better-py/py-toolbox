@@ -141,7 +141,7 @@ class PolarsCli(object):
         # 根据住院号，筛选同一个病人记录， 批量计算平均值， 并写入文件
         data = self.df_b.groupby(self.pick_col_name).mean()
 
-        # data.to_excel(self.outfile, sheet_name='avg')
+        data.write_csv(self.outfile)
         print(f"group calc: \n{data}")
 
     def task_calc_num(self):
@@ -169,7 +169,7 @@ class PolarsCli(object):
 @click.command()
 @click.option("--infile_a", default="input/1.xlsx", help="sheet input filename")
 @click.option("--infile_b", default="input/2.xlsx", help="sheet input filename")
-@click.option("--outfile", default="output/out.xlsx", help="sheet output filename")
+@click.option("--outfile", default="output/out.csv", help="sheet output filename")
 def main(infile_a: str, infile_b: str, outfile: str):
     print(f"input args: {infile_a}, {infile_b}, {outfile}")
     r = PolarsCli(infile_a=infile_a, infile_b=infile_b, outfile=outfile)
