@@ -21,24 +21,45 @@ class CSVParser(object):
 
         # read file:
         book = pe.get_book(file_name=file)
-        # the default iterator for a **Book* instance is a SheetIterator
-        for sheet in book:
-            # Each sheet has name
-            print("sheet name: %s" % sheet.name)
 
-            limit = 5
-            i = 0
-            for row in sheet:
-                if i == limit:
-                    break
-                print(f"\t{row}")
-                i += 1
+        # print limit of sheets
+        self.print_rows(book)
+        self.print_cols(book)
 
         return book
+
+    @staticmethod
+    def print_rows(book):
+        if not book:
+            return None
+
+        # print:
+        for sheet in book:
+            print(f"\nsheet <{sheet.name}> rows:")
+
+            i, limit = 0, 5
+            for row in sheet.rows():
+                if i == limit:
+                    break
+                print(f"\trow: {row}")
+                i += 1
+
+    @staticmethod
+    def print_cols(book):
+        if not book:
+            return None
+
+        # print:
+        for sheet in book:
+            print(f"\nsheet <{sheet.name}> columns:")
+
+            for col in sheet.columns():
+                print(f"\tcol : {col[:8]}")
 
     def handle(self, ):
         self.book_a = self.read(self.file_a)
         self.book_b = self.read(self.file_b)
+        # self.parse_columns()
 
     def write(self, data):
         pass
