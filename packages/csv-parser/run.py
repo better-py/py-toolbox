@@ -1,5 +1,6 @@
 import click
 import pyexcel as pe
+import pandas as pd
 
 
 class CSVParser(object):
@@ -12,15 +13,37 @@ class CSVParser(object):
         self.file_b = file_b or None
 
         # sheet book:
-        self.book_a = None
-        self.book_b = None
+        self.df_a = None
+        self.df_b = None
 
-    def read(self, file: str):
-        if not file:
+        # data frame:
+        self.df_a = None
+        self.df_b = None
+
+        # 目标列：
+        self.pick_cols_a = None
+
+        # task functions:
+        self.tasks = []
+
+    @staticmethod
+    def pd_read(filename: str):
+        if not filename:
+            return None
+        book = pd.read_excel(filename)
+
+        print(f"file <{filename}>:\n{book}")
+        print(f"columns:\n\t{book.columns}")
+        print(f"index:\n\t{book.index}")
+
+        return book
+
+    def read(self, filename: str):
+        if not filename:
             return None
 
         # read file:
-        book = pe.get_book(file_name=file)
+        book = pe.get_book(file_name=filename)
 
         # print limit of sheets
         self.print_rows(book)
@@ -57,12 +80,39 @@ class CSVParser(object):
                 print(f"\tcol : {col[:8]}")
 
     def handle(self, ):
-        self.book_a = self.read(self.file_a)
-        self.book_b = self.read(self.file_b)
-        # self.parse_columns()
+        # self.book_a = self.read(self.file_a)
+        # self.book_b = self.read(self.file_b)
 
-    def write(self, data):
-        pass
+        self.df_a = self.pd_read(self.file_a)
+        self.df_b = self.pd_read(self.file_b)
+
+        result = self.df_b[self.df_b['住院号'] == 'H80008']
+        print(f"{result}")
+
+        self.add_task(self.task_calc_avg)
+        self.do_task()
+
+    def add_task(self, task_fn):
+        if task_fn:
+            self.tasks.append(task_fn)
+
+    def do_task(self):
+        for task_fn in self.tasks:
+            task_fn()
+
+    def task_calc_avg(self):
+        """计算指定行的平均值
+
+        :return:
+        """
+
+        # 去重复：
+        unique_hospital_ids = set(self.df_b['住院号'])
+
+        # 筛选单个病人的就诊记录：
+        for uid in unique_hospital_ids:
+            data = self.df_b[self.df_b['住院号'] == uid]
+            print(f"\n\n{data}")
 
 
 @click.command()

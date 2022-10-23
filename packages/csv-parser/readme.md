@@ -7,5 +7,10 @@
 
 > requirements:
 
+- https://github.com/pandas-dev/pandas
 - https://github.com/pyexcel/pyexcel
 
+
+> docs: 
+
+- https://www.pypandas.cn/docs/user_guide/io.html
