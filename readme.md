@@ -4,6 +4,15 @@
 
 ## packages:
 
+| 子项目                                         | 说明                           | 备注                |
+|:--------------------------------------------|:-----------------------------|:------------------|
+| [csv-parser](packages/csv-parser)           | excel表格处理工具                  | ⭐⭐⭐               |
+| [discord-cli](packages/discord-cli)         | discord bot 工具               | ⭐⭐⭐⭐⭐             |
+| [rsshub](packages/rsshub)                   | rss 订阅源格式化工具                 | ⭐⭐                |
+| [chain](packages/chain)                     | eth 脚本工具                     | ⭐⭐                |
+| xxxxxxxxxxxxxx                              | xxxxxxxxxxxxxxxxxx           | xxxxxxxxxx        |
+| xxxxxxxxxxxxxx                              | xxxxxxxxxxxxxxxxxx           | xxxxxxxxxx        |
+
 > 小工具启动脚本入口:
 
 - ✅ [Taskfile.yml](Taskfile.yml)
@@ -103,9 +112,7 @@ cp .env.local .env
 .env
 ```
 
-
 > then run:
-
 
 ```ruby
 
