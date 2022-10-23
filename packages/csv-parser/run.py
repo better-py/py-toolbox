@@ -14,8 +14,8 @@ class CSVParser(object):
         self.outfile = outfile or None
 
         # sheet book:
-        self.df_a = None
-        self.df_b = None
+        self.book_a = None
+        self.book_b = None
 
         # data frame:
         self.df_a = None
