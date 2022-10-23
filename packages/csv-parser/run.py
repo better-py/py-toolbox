@@ -112,7 +112,11 @@ class CSVParser(object):
         # 筛选单个病人的就诊记录：
         for uid in unique_hospital_ids:
             data = self.df_b[self.df_b['住院号'] == uid]
-            print(f"\n\n{data}")
+
+            # 计算平均值， 保留2位小数
+            avg = data.mean(numeric_only=True).round(2)
+            print(f"{data}")
+            print(f"avg:{avg}\n")
 
 
 @click.command()
