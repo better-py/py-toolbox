@@ -4,7 +4,7 @@ import pandas as pd
 import polars as pl
 
 
-class CSVParser(object):
+class PolarsCli(object):
     """表格处理工具
 
     """
@@ -172,7 +172,7 @@ class CSVParser(object):
 @click.option("--outfile", default="output/out.xlsx", help="sheet output filename")
 def main(infile_a: str, infile_b: str, outfile: str):
     print(f"input args: {infile_a}, {infile_b}, {outfile}")
-    r = CSVParser(infile_a=infile_a, infile_b=infile_b, outfile=outfile)
+    r = PolarsCli(infile_a=infile_a, infile_b=infile_b, outfile=outfile)
     r.handle()
 
 
