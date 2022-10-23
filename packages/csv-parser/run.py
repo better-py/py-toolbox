@@ -99,8 +99,15 @@ class CSVParser(object):
 
     def do_task(self):
         self.task_calc_avg()
+        self.task_calc_num()
 
-    def task_calc_avg1(self):
+    def task_calc_avg(self):
+        # 根据住院号，筛选同一个病人记录， 批量计算平均值， 并写入文件
+        data = self.df_b.groupby(self.pick_cols_name).mean(numeric_only=True).round(2)
+        data.to_excel(self.outfile, sheet_name='avg')
+        print(f"group calc: \n{data}")
+
+    def task_calc_num(self):
         """计算指定行的平均值
 
         :return:
@@ -109,21 +116,17 @@ class CSVParser(object):
         # 去重复：
         unique_hospital_ids = set(self.df_b['住院号'])
 
-        # 筛选单个病人的就诊记录：
-        for uid in unique_hospital_ids:
-            data = self.df_b[self.df_b['住院号'] == uid]
-            # 计算平均值， 保留2位小数
-            avg = data.mean(numeric_only=True).round(2)
-            pd.melt(avg).to_excel(self.outfile, sheet_name='avg')
+        print(f"number of unique_hospital_ids: {len(unique_hospital_ids)}")
 
-            print(f"{data}")
-            print(f"avg:{pd.melt(avg)}\n")
-
-    def task_calc_avg(self):
-        # 根据住院号，筛选同一个病人记录， 批量计算平均值， 并写入文件
-        data = self.df_b.groupby(self.pick_cols_name).mean(numeric_only=True).round(2)
-        data.to_excel(self.outfile, sheet_name='avg')
-        print(f"group calc: \n{data}")
+        # # 筛选单个病人的就诊记录：
+        # for uid in unique_hospital_ids:
+        #     data = self.df_b[self.df_b['住院号'] == uid]
+        #     # 计算平均值， 保留2位小数
+        #     avg = data.mean(numeric_only=True).round(2)
+        #     pd.melt(avg).to_excel(self.outfile, sheet_name='avg')
+        #
+        #     print(f"{data}")
+        #     print(f"avg:{pd.melt(avg)}\n")
 
 
 @click.command()
