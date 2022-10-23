@@ -23,4 +23,12 @@ tasks:
   run:
     cmds:
       - |
+        python3 run.py
+
+  run:args:
+    cmds:
+      - |
         python3 run.py \
+          --infile_a=input/1.xlsx \
+          --infile_b=input/2.xlsx \
+          --outfile=output/out.xlsx
