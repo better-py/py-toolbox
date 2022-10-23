@@ -1,29 +1,9 @@
-ipython==7.30.0
-Pillow==8.4.0
-display==1.0.0
+ipython==8.5.0
 jupyter==1.0.0
-aiofiles==0.8.0
-asyncio==3.4.3
-aiojobs==1.0.0
-click==8.0.3
-
-# ipfs:
-pinatapy-vourhey==0.1.3
+click==8.1.3
 
 # excel:
 xlrd==2.0.1
-pyexcel==0.6.7
-
-###############################################################################
-
-web3==5.28.0
-py-etherscan-api==0.8.0
-#etherscan-python==2.1.0
+pyexcel==0.7.0
 
 
-
-#
-# for packages/discord
-#
-
-discord.py==2.0.1

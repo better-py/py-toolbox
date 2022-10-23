@@ -9,7 +9,7 @@ from web3 import Web3
 from etherscan.accounts import Account
 
 
-class ETHScaner(object):
+class CSVParser(object):
     """
     reference:
         - etherscan.io api:
@@ -58,7 +58,7 @@ class ETHScaner(object):
 @click.option("--tx_count", default=0, help="eth tx count")
 def main(rpc_url: str, etherscan_api_key: str, address: str, tx_type: str, tx_count: int, ):
     print(f"input args: {rpc_url}, {etherscan_api_key}, {address}, {tx_type}, {tx_count}")
-    r = ETHScaner(rpc_url=rpc_url, etherscan_api_key=etherscan_api_key)
+    r = CSVParser(rpc_url=rpc_url, etherscan_api_key=etherscan_api_key)
     r.balance(address)
     r.scan(address=address, tx_type=tx_type, tx_count=tx_count)
 
