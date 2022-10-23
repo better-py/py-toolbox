@@ -16,6 +16,11 @@ includes:
     dir: packages/rsshub/
     optional: true #
 
+  csv:
+    taskfile: packages/csv-parser/
+    dir: packages/csv-parser/
+    optional: true #
+
   discord:
     taskfile: packages/discord-cli/Taskfile.yml
     dir: packages/discord-cli/

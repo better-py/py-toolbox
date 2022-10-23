@@ -16,10 +16,12 @@ env:
 
 
 tasks:
+  install:
+    cmds:
+      - pip3 install -r requirements.txt
+
   run:
     cmds:
       - |
         python3 run.py \
-          --rpc_url=${INFURA_RPC_URL} \
-          --etherscan_api_key=${ETHERSCAN_API_KEY} \
           --address=${ETH_ADDRESS} \
