@@ -8,9 +8,10 @@ class CSVParser(object):
 
     """
 
-    def __init__(self, file_a: str, file_b: str):
-        self.file_a = file_a or None
-        self.file_b = file_b or None
+    def __init__(self, infile_a: str, infile_b: str, outfile: str):
+        self.infile_a = infile_a or None
+        self.infile_b = infile_b or None
+        self.outfile = outfile or None
 
         # sheet book:
         self.df_a = None
@@ -21,10 +22,7 @@ class CSVParser(object):
         self.df_b = None
 
         # 目标列：
-        self.pick_cols_a = None
-
-        # task functions:
-        self.tasks = []
+        self.pick_cols_name = '住院号'
 
     @staticmethod
     def pd_read(filename: str):
@@ -39,6 +37,11 @@ class CSVParser(object):
         return book
 
     def read(self, filename: str):
+        """excel 读取（弃用）
+
+        :param filename:
+        :return:
+        """
         if not filename:
             return None
 
@@ -83,24 +86,21 @@ class CSVParser(object):
         # self.book_a = self.read(self.file_a)
         # self.book_b = self.read(self.file_b)
 
-        self.df_a = self.pd_read(self.file_a)
-        self.df_b = self.pd_read(self.file_b)
+        self.df_a = self.pd_read(self.infile_a)
+        self.df_b = self.pd_read(self.infile_b)
 
         result = self.df_b[self.df_b['住院号'] == 'H80008']
         print(f"{result}")
 
-        self.add_task(self.task_calc_avg)
+        #
+        # 处理具体功能：
+        #
         self.do_task()
 
-    def add_task(self, task_fn):
-        if task_fn:
-            self.tasks.append(task_fn)
-
     def do_task(self):
-        for task_fn in self.tasks:
-            task_fn()
+        self.task_calc_avg()
 
-    def task_calc_avg(self):
+    def task_calc_avg1(self):
         """计算指定行的平均值
 
         :return:
@@ -112,19 +112,27 @@ class CSVParser(object):
         # 筛选单个病人的就诊记录：
         for uid in unique_hospital_ids:
             data = self.df_b[self.df_b['住院号'] == uid]
-
             # 计算平均值， 保留2位小数
             avg = data.mean(numeric_only=True).round(2)
+            pd.melt(avg).to_excel(self.outfile, sheet_name='avg')
+
             print(f"{data}")
-            print(f"avg:{avg}\n")
+            print(f"avg:{pd.melt(avg)}\n")
+
+    def task_calc_avg(self):
+        # 根据住院号，筛选同一个病人记录， 批量计算平均值， 并写入文件
+        data = self.df_b.groupby(self.pick_cols_name).mean(numeric_only=True).round(2)
+        data.to_excel(self.outfile, sheet_name='avg')
+        print(f"group calc: \n{data}")
 
 
 @click.command()
-@click.option("--file_a", default="input/1.xlsx", help="sheet filename")
-@click.option("--file_b", default="input/2.xlsx", help="sheet filename")
-def main(file_a: str, file_b: str):
-    print(f"input args: {file_a}, {file_b}")
-    r = CSVParser(file_a=file_a, file_b=file_b)
+@click.option("--infile_a", default="input/1.xlsx", help="sheet input filename")
+@click.option("--infile_b", default="input/2.xlsx", help="sheet input filename")
+@click.option("--outfile", default="output/out.xlsx", help="sheet output filename")
+def main(infile_a: str, infile_b: str, outfile: str):
+    print(f"input args: {infile_a}, {infile_b}, {outfile}")
+    r = CSVParser(infile_a=infile_a, infile_b=infile_b, outfile=outfile)
     r.handle()
 
 
