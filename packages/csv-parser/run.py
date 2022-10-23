@@ -89,9 +89,6 @@ class CSVParser(object):
         self.df_a = self.pd_read(self.infile_a)
         self.df_b = self.pd_read(self.infile_b)
 
-        result = self.df_b[self.df_b['住院号'] == 'H80008']
-        print(f"{result}")
-
         #
         # 处理具体功能：
         #
@@ -114,7 +111,7 @@ class CSVParser(object):
         """
 
         # 去重复：
-        unique_hospital_ids = set(self.df_b['住院号'])
+        unique_hospital_ids = set(self.df_b[self.pick_col_name])
 
         print(f"number of unique_hospital_ids: {len(unique_hospital_ids)}")
 
