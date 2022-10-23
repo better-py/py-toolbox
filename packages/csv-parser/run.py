@@ -24,16 +24,21 @@ class CSVParser(object):
         # the default iterator for a **Book* instance is a SheetIterator
         for sheet in book:
             # Each sheet has name
-            print("sheet: %s" % sheet.name)
-            # Once you have a sheet instance, you can regard it as
-            # a Reader instance. You can iterate its member in the way
-            # you wanted it
+            print("sheet name: %s" % sheet.name)
+
+            limit = 5
+            i = 0
             for row in sheet:
-                print(row)
+                if i == limit:
+                    break
+                print(f"\t{row}")
+                i += 1
+
         return book
 
     def handle(self, ):
         self.book_a = self.read(self.file_a)
+        self.book_b = self.read(self.file_b)
 
     def write(self, data):
         pass
@@ -42,11 +47,8 @@ class CSVParser(object):
 @click.command()
 @click.option("--file_a", default="input/1.xlsx", help="sheet filename")
 @click.option("--file_b", default="input/2.xlsx", help="sheet filename")
-@click.option("--address", default="", help="eth address")
-@click.option("--tx_type", default="", help="eth tx type")
-@click.option("--tx_count", default=0, help="eth tx count")
-def main(file_a: str, file_b: str, address: str, tx_type: str, tx_count: int, ):
-    print(f"input args: {file_a}, {file_b}, {address}, {tx_type}, {tx_count}")
+def main(file_a: str, file_b: str):
+    print(f"input args: {file_a}, {file_b}")
     r = CSVParser(file_a=file_a, file_b=file_b)
     r.handle()
 

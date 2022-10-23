@@ -24,4 +24,3 @@ tasks:
     cmds:
       - |
         python3 run.py \
-          --address=${ETH_ADDRESS} \
