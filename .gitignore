@@ -348,4 +348,5 @@ tags
 ### tmp
 tmp/
 input/
+output/
 
