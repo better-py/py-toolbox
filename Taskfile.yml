@@ -21,6 +21,11 @@ includes:
     dir: packages/csv-parser/
     optional: true #
 
+  polars:
+    taskfile: packages/polars-cli/
+    dir: packages/polars-cli/
+    optional: true #
+
   discord:
     taskfile: packages/discord-cli/Taskfile.yml
     dir: packages/discord-cli/
