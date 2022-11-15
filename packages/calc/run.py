@@ -5,6 +5,7 @@ def calc(list_a, list_b: list):
     '''
     Convert input to ints because of accuracy issue with float arithmetic.
     '''
+    lista, list_b = sorted(list_a), sorted(list_b)
     la_fmt = [int(x * 100) for x in list_a]
     lb_fmt = [int(x * 100) for x in list_b]
 

@@ -9,6 +9,7 @@
 ## solution:
 
 - 68L: https://gist.github.com/czheo/b5c01a35ef192713fd83d0826fe6901d
+- https://leetcode.cn/problems/coin-change/
 
 ```ruby
 数据集1:
