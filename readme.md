@@ -2,7 +2,7 @@
 
 - python toolbox
 
-## packages:
+## Packages:
 
 | 子项目                                         | 说明                           | 备注                |
 |:--------------------------------------------|:-----------------------------|:------------------|
@@ -59,6 +59,14 @@ task discord:run
 > requirements:
 
 - ✅ `Python 3.9.9`: 理论上 python3.5+应该都 ok, 自行判断
+
+```ruby
+
+╰─>$ python --version
+Python 3.10.9
+
+```
+
 - ✅ [pyenv](https://github.com/pyenv/pyenv-installer):
     - https://github.com/hhstore/blog/issues/17
 - ✅ [go-task](https://github.com/go-task/task)
@@ -126,3 +134,12 @@ task rss:run
 task chain:run
 
 ```
+
+
+## Reference:
+
+
+
+- [pipx](https://pypa.github.io/pipx/installation/)
+- [poetry](https://python-poetry.org/docs/#installing-with-pipx)
+- [cookiecutter](https://cookiecutter.readthedocs.io/en/stable/installation.html)

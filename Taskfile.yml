@@ -60,6 +60,20 @@ tasks:
       - pyenv install 3.9.9
       - pyenv virtualenv 3.9.9 py39-toolbox
       - pyenv local py39-toolbox
+      - pip install --upgrade pip
+      - pip install -U pipx
+      - pipx ensurepath
+      - pipx --version
+
+  install:tools:
+    cmds:
+      - pipx install cookiecutter
+      - cookiecutter --version
+      - pipx install poetry
+      - poetry --version
+      - poetry config virtualenvs.in-project true
+      - poetry config --list
+
 
   install:
     cmds:
@@ -79,6 +93,12 @@ tasks:
       - cp .env.local .env
 
   ##################################################################################################
+
+
+  new:
+    dir: packages
+    cmds:
+      - cookiecutter gh:jacebrowning/template-python -f
 
   run:eth:
     cmds:

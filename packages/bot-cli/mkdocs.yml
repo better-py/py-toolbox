@@ -1,0 +1,19 @@
+site_name: bot-cli
+site_description: bot pal
+site_author: henry
+
+repo_url: https://github.com/hhstore/toolbox
+edit_uri: https://github.com/hhstore/toolbox/edit/main/docs
+
+theme: readthedocs
+
+markdown_extensions:
+  - codehilite
+
+nav:
+  - Home: index.md
+  - Advanced: advanced.md
+  - About:
+    - Release Notes: about/changelog.md
+    - Contributor Guide: about/contributing.md
+    - License: about/license.md
