@@ -1,0 +1,46 @@
+version: "3"
+
+
+#
+# global vars: https://taskfile.dev/#/usage?id=variables
+#
+vars:
+  VAR1: "some-var"
+
+# global env:
+env:
+  ENV1: testing
+
+
+################################################################################################
+
+
+tasks:
+
+  install:
+    cmds:
+      - poetry install
+
+
+  ################################################################################################
+
+  run:
+    cmds:
+      - |
+        python3 run.py
+
+  run:args:
+    cmds:
+      - |
+        python3 run.py \
+          --infile_a=input/1.xlsx \
+          --infile_b=input/2.xlsx \
+          --outfile=output/out.xlsx
+
+
+  ################################################################################################
+
+  dep:show:
+    cmds:
+      - poetry show --tree
+      - poetry show --latest

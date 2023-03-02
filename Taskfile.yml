@@ -27,9 +27,15 @@ includes:
     optional: true #
 
   discord:
-    taskfile: packages/discord-cli/Taskfile.yml
+    taskfile: packages/discord-cli/
     dir: packages/discord-cli/
     optional: true #
+
+  bot:
+    taskfile: packages/bot-cli/
+    dir: packages/bot-cli/
+    optional: true #
+
 
 
 ################################################################################################

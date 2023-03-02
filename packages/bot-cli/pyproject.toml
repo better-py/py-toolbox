@@ -28,7 +28,7 @@ classifiers = [
 
 [tool.poetry.dependencies]
 
-python = "^3.11"
+python = "^3.10"
 
 # TODO: Remove these and add your library's requirements
 click = "*"
