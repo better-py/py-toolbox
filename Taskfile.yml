@@ -80,6 +80,10 @@ tasks:
 
   ##################################################################################################
 
+  new:
+    cmds:
+      - poetry new {{.NAME}}
+
   run:eth:
     cmds:
       - task: chain:run
@@ -90,6 +94,20 @@ tasks:
 
 
   ##################################################################################################
+
+
+  quick:
+    cmds:
+      - task: commit
+      - task: commit
+  #      - task: pull
+  #      - task: push
+
+  commit:
+    cmds:
+      - git add .
+      - git commit -m "update"
+    ignore_error: true
 
   push:
     cmds:
