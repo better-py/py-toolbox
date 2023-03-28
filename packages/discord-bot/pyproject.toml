@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "discord-bot"
+version = "0.1.0"
+description = ""
+authors = ["Henry.Huang <hhglory@outlook.com>"]
+readme = "README.md"
+packages = [{include = "discord_bot", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+click = "^8.1.3"
+discord-py = "^2.2.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

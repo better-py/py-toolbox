@@ -27,8 +27,8 @@ includes:
     optional: true #
 
   discord:
-    taskfile: packages/discord-cli/Taskfile.yml
-    dir: packages/discord-cli/
+    taskfile: packages/discord-bot/
+    dir: packages/discord-bot/
     optional: true #
 
 
@@ -82,7 +82,8 @@ tasks:
 
   new:
     cmds:
-      - poetry new {{.NAME}}
+      - poetry new ${NEW_PROJECT_NAME} --src
+    dir: packages/
 
   run:eth:
     cmds:
