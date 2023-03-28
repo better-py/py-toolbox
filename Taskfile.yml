@@ -110,6 +110,11 @@ tasks:
       - git commit -m "update"
     ignore_error: true
 
+  pull:
+    cmds:
+      - git config pull.rebase false
+      - git pull origin main
+
   push:
     cmds:
       - git push origin main --tags
