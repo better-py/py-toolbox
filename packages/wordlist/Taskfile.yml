@@ -1,0 +1,102 @@
+version: "3"
+
+
+#
+# global vars: https://taskfile.dev/#/usage?id=variables
+#
+vars:
+  VAR1: "some-var"
+
+# global env:
+env:
+  ENV1: testing
+
+
+################################################################################################
+
+
+tasks:
+  run:
+    cmds:
+      - |
+        python3 run.py \
+          --token=${DISCORD_TOKEN} \
+          --http_proxy=${HTTP_PROXY}
+    dir: src/discord_bot/
+
+  test:
+    cmds:
+      # pytest 选项：
+      #    --fixtures
+      #    --capture=no : 输出 log 信息
+      - |
+        poetry run pytest \
+          --capture=no
+
+  test:cov:
+    cmds:
+      - |
+        poetry run pytest \
+          --capture=no \
+          --cov=src/wordlist/ \
+          --cov-report=term-missing \
+          --cov-fail-under=100 \
+          --cov-branch \
+          --cov-context=test
+
+  test:cov:html:
+    cmds:
+      - |
+        poetry run pytest \
+          --cov=src/wordlist/ \
+          --cov-report=term-missing \
+          --cov-report=html:coverage \
+          --cov-fail-under=100 \
+          --cov-branch \
+          --cov-context=test
+
+
+  test:cov:all:
+    cmds:
+      - |
+        poetry run pytest \
+          --cov=src/wordlist/ \
+          --cov-report=term-missing \
+          --cov-report=html:coverage \
+          --cov-report=xml:coverage.xml \
+          --cov-fail-under=100 \
+          --cov-branch \
+          --cov-context=test
+
+
+  ################################################################################################
+
+
+  install:
+    cmds:
+      - poetry install
+
+  add:
+    cmds:
+      - poetry add click setuptools loguru
+
+  add:dev:
+    cmds:
+      - poetry add pytest --dev
+
+  update:
+    cmds:
+      - poetry update
+
+  config:
+    cmds:
+      - poetry config virtualenvs.in-project false --local
+      - poetry config virtualenvs.create false --local
+
+  env:
+    cmds:
+      - poetry
+      - poetry env list
+      - poetry cache list
+      - poetry debug info
+      - poetry debug resolve

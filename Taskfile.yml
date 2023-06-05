@@ -36,6 +36,12 @@ includes:
     dir: packages/bot-cli/
     optional: true #
 
+  word:
+    taskfile: packages/wordlist/
+    dir: packages/wordlist/
+    optional: true #
+
+
 
 
 ################################################################################################
