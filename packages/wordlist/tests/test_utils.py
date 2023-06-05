@@ -1,6 +1,6 @@
 import pytest
 
-from src.wordlist.main import path_jump_to
+from src.wordlist.utils import path_jump_to
 
 
 def test_path_jump_to():

@@ -10,6 +10,7 @@ vars:
 # global env:
 env:
   ENV1: testing
+  PYTHONPATH: "."   # TODO X: 注意！ fix for `task run`, 模块路径找不到！
 
 
 ################################################################################################
@@ -19,10 +20,8 @@ tasks:
   run:
     cmds:
       - |
-        python3 run.py \
-          --token=${DISCORD_TOKEN} \
-          --http_proxy=${HTTP_PROXY}
-    dir: src/discord_bot/
+        export PYTHONPATH="."; \
+        python3 bin/main.py
 
   test:
     cmds:
