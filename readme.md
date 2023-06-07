@@ -4,14 +4,17 @@
 
 ## Packages:
 
-| 子项目                                 | 说明                           | 备注                |
-|:------------------------------------|:-----------------------------|:------------------|
-| [csv-parser](packages/csv-parser)   | excel表格处理工具                  | ⭐⭐⭐               |
-| [discord-bot](packages/discord-bot) | discord bot 工具               | ⭐⭐⭐⭐⭐             |
-| [rsshub](packages/rsshub)           | rss 订阅源格式化工具                 | ⭐⭐                |
-| [chain](packages/chain)             | eth 脚本工具                     | ⭐⭐                |
-| xxxxxxxxxxxxxx                      | xxxxxxxxxxxxxxxxxx           | xxxxxxxxxx        |
-| xxxxxxxxxxxxxx                      | xxxxxxxxxxxxxxxxxx           | xxxxxxxxxx        |
+| 子项目                                    | 说明                 | 备注    |
+|:---------------------------------------|:-------------------|:------|
+| ✅️ [csv-parser](packages/csv-parser)   | excel表格处理工具        | ⭐⭐⭐   |
+| ✅️ [discord-bot](packages/discord-bot) | discord bot 工具     | ⭐⭐⭐⭐⭐ |
+| ✅️ [rsshub](packages/rsshub)           | rss 订阅源格式化工具       | ⭐⭐    |
+| ✅️ [chain](packages/chain)             | eth 脚本工具           | ⭐⭐    |
+| ✅️ [wordlist](packages/wordlist)       | 英语分级词汇清洗工具         | ⭐⭐⭐   |
+| [xxx]()                                | xxxxxxxxxxxxxxxxxx | ⭐     |
+| [xxx]()                                | xxxxxxxxxxxxxxxxxx | ⭐     |
+| [xxx]()                                | xxxxxxxxxxxxxxxxxx | ⭐     |
+| [xxx]()                                | xxxxxxxxxxxxxxxxxx | ⭐     |
 
 > 小工具启动脚本入口:
 
@@ -135,10 +138,7 @@ task chain:run
 
 ```
 
-
 ## Reference:
-
-
 
 - [pipx](https://pypa.github.io/pipx/installation/)
 - [poetry](https://python-poetry.org/docs/#installing-with-pipx)

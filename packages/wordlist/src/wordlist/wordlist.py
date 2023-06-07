@@ -6,7 +6,7 @@ from src.wordlist.utils import path_jump_to, path_search, traverse_dir
 
 class WordListTool(object):
     """
-    词库工具, 清洗一些词库数据（CET4,CET6, GRE, TOEFL, IELTS, etc.）
+    词库工具, 清洗一些单词库数据（CET4,CET6, GRE, TOEFL, IELTS, etc.）
     """
 
     def __init__(self, root_dir: str = None, resource_dir: str = None):
@@ -34,7 +34,7 @@ class WordListTool(object):
             "ielts": set(),  # 雅思
             "gre": set(),  # GRE
             #
-            # merge:
+            # merge: 合并词库
             #
             "cet4_cet6": set(),  # 英语4级 + 英语6级
             "cet4_cet6_toefl": set(),  # 英语4级 + 英语6级 + 托福
@@ -50,6 +50,11 @@ class WordListTool(object):
         pass
 
     def parse_txt(self):
+        """ 解析 IELTS 词汇表
+
+        :ref: https://github.com/fanhongtao/IELTS
+        :return:
+        """
 
         res = "IELTS/IELTS Word List.txt"
         file = self.resource_path.joinpath(res)
@@ -115,7 +120,7 @@ class WordListTool(object):
                     "meaning": meaning.strip(),
                 }
 
-        # ====================
+        # =====================================================
         logger.debug(f"words: {len(words)}")
         return words
 
@@ -136,7 +141,7 @@ class WordListTool(object):
 
     def parse_vocabulary_by_dirs(self):
         """解析词库文件
-
+        :ref: https://github.com/tabhub/English-words-cards
         :param
         :return:
         """
@@ -146,6 +151,7 @@ class WordListTool(object):
 
     def handle2(self):
         """处理词库文件
+        :ref: https://github.com/tabhub/English-words-cards
         :return:
         """
         # parse:
@@ -153,8 +159,15 @@ class WordListTool(object):
         self.save_files("2")
 
     def handle3(self):
+        """ 解析 IELTS 词汇表
+        :ref: https://github.com/fanhongtao/IELTS
+        :return:
+        """
         words = self.parse_txt()
         self.save_csv(words)
+
+    def handle4(self):
+        pass
 
     def save_files(self, file_suffix: str = None):
         """保存文件
@@ -214,7 +227,7 @@ class WordListTool(object):
             logger.debug(f"words num: {len(words)}, dir: {res_dir}")
             self.words[k] = sorted(words)
 
-        # ===================================================
+        # =====================================================
 
         self.merge_words()
 
@@ -249,7 +262,7 @@ class WordListTool(object):
             # sorted
             self.words[k] = sorted(words)
 
-        # ===================================================
+        # =====================================================
 
         # merge words:
         self.merge_words()
