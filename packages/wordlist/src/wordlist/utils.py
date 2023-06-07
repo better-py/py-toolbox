@@ -2,14 +2,19 @@ from loguru import logger
 from pathlib import Path, PosixPath
 
 
-def load_dir(path: PosixPath):
-    """加载目录下所有文件
+def traverse_dir(path: PosixPath, only_file: bool = True) -> list:
+    """遍历目录下所有文件
 
     :param path: 目录路径
+    :param only_file: 是否只返回文件
     :return: 文件路径列表
     """
-    logger.debug(f"load dir: {path}")
-    return [x for x in path.iterdir() if x.is_file()]
+    logger.debug(f"traverse dir: {path}")
+
+    if only_file:
+        return [x for x in path.iterdir() if x.is_file()]
+
+    return [x for x in path.iterdir()]
 
 
 def path_search(where: str, path: PosixPath = None):

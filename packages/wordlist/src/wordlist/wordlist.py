@@ -1,5 +1,7 @@
+import json
+
 from loguru import logger
-from src.wordlist.utils import path_jump_to, path_search, load_dir
+from src.wordlist.utils import path_jump_to, path_search, traverse_dir
 
 
 class WordListTool(object):
@@ -17,6 +19,9 @@ class WordListTool(object):
         # 默认处理结果根路径：tmp/dist/
         self.dist_path = self.resource_path.joinpath(self._dist_dir)
 
+        # mkdir:
+        self.dist_path.mkdir(parents=True, exist_ok=True)
+
         logger.debug(f"resource_path: {self.resource_path}, dist_path: {self.dist_path}")
 
     def parse_xlsx(self, filename: str):
@@ -26,10 +31,43 @@ class WordListTool(object):
         """
         pass
 
-    def parse_dir(self, dir_path: str, file_type: str = ".png"):
+    def parse_dir(self, dirs: str = None, file_type: str = ".png"):
         """解析目录下所有文件
 
-        :param dir_path: 目录路径
+        :param dirs: 目录路径
         :param file_type: 目标文件类型
         """
-        pass
+
+        res_dirs = dirs or {
+            "cet4": "English-words-cards/CET4/images",
+            "cet6": "English-words-cards/CET6/images",
+            "toefl": "English-words-cards/TOEFL/images",
+            "ielts": "English-words-cards/IELTS/images",
+            "gre": "English-words-cards/GRE/images",
+        }
+
+        for k, v in res_dirs.items():
+            res_dir = self.resource_path.joinpath(v)
+            logger.debug(f"res_dir: {res_dir}")
+
+            words = set()
+            for f in res_dir.iterdir():
+                if f.is_file() and f.suffix == file_type:
+                    print(f"file name: {f.name}, file path: {f.absolute()}")
+                    word = f.name.lower().removesuffix(file_type)
+                    words.add(word)
+                logger.debug(f"words: {len(words)}, dir: {res_dir}")
+
+            #
+            #
+            #
+            f_txt = self.dist_path.joinpath(f"{k}.txt")
+            f_json = self.dist_path.joinpath(f"{k}.json")
+
+            # save to txt:
+            with open(f_txt, "w") as fp:
+                for word in words:
+                    fp.write(word + "\n")
+            # save to json:
+            with open(f_json, "w") as fp:
+                fp.write(json.dumps(list(words)))
