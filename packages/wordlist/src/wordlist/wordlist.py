@@ -59,13 +59,22 @@ class WordListTool(object):
         self.parse_dirs()
         self.save_files()
 
-    def save_files(self):
+    def handle2(self):
+        """处理词库文件
+        :return:
+        """
+        # parse:
+        self.parse_dir_files()
+        self.save_files("2")
+
+    def save_files(self, file_suffix: str = None):
         """保存文件
         :return:
         """
         for k, v in self.words.items():
-            f_txt = self.dist_path.joinpath(f"{k}.txt")
-            f_json = self.dist_path.joinpath(f"{k}.json")
+            kk = f"{k}" if not file_suffix else f"{k}_{file_suffix}"
+            f_txt = self.dist_path.joinpath(f"{kk}.txt")
+            f_json = self.dist_path.joinpath(f"{kk}.json")
 
             # sort:
             v = sorted(v)
@@ -79,34 +88,46 @@ class WordListTool(object):
                 for word in v:
                     fp.write(word + "\n")
 
-    def parse_dirs(self, dirs: str = None, file_type: str = ".png"):
-        """解析目录下所有文件
-
-        :param dirs: 目录路径
-        :param file_type: 目标文件类型
-        """
-
-        res_dirs = dirs or {
-            "cet4": "English-words-cards/CET4/images",
-            "cet6": "English-words-cards/CET6/images",
-            "toefl": "English-words-cards/TOEFL/images",
-            "ielts": "English-words-cards/IELTS/images",
-            "gre": "English-words-cards/GRE/images",
+    def parse_dir_files(self):
+        res_dirs = {
+            "cet4": "English-words-cards/CET4/manifest.json",
+            "cet6": "English-words-cards/CET6/manifest.json",
+            "toefl": "English-words-cards/TOEFL/manifest.json",
+            "ielts": "English-words-cards/IELTS/manifest.json",
+            "gre": "English-words-cards/GRE/manifest.json",
         }
 
+        # parse json file:
         for k, v in res_dirs.items():
             res_dir = self.resource_path.joinpath(v)
 
             words = set()
-            for f in res_dir.iterdir():
-                if f.is_file() and f.suffix == file_type:
-                    word = f.name.lower().removesuffix(file_type)
+            with open(res_dir, "r") as fp:
+                data = json.loads(fp.read())
+                items = data["items"] or []
+
+                for item in items:
+                    v = item["url"] or ""
+                    if not v:
+                        continue
+
+                    # fmt:
+                    word = v.lower().rsplit("/", 1)[-1].removesuffix(".png")
+                    # logger.debug(f"word: {word}")
+                    if word in words:
+                        logger.warning(f"word: {word} already exist in {res_dir}.")
+                    # save set:
                     words.add(word)
 
-            logger.debug(f"words: {len(words)}, dir: {res_dir}")
-            # sorted
+            # save:
+            logger.debug(f"words num: {len(words)}, dir: {res_dir}")
             self.words[k] = sorted(words)
 
+        # ===================================================
+
+        self.merge_words()
+
+    def merge_words(self):
         # merge words:
         merge_words = set()
         # add cet4
@@ -130,3 +151,39 @@ class WordListTool(object):
         merge_words.update(self.words["gre"])
         self.words["cet4_cet6_toefl_ielts_gre"] = set(sorted(merge_words))
         logger.debug(f"words union: cet4_cet6_toefl_ielts_gre = {len(self.words['cet4_cet6_toefl_ielts_gre'])}")
+
+    def parse_dirs(self, dirs: str = None, file_type: str = ".png"):
+        """解析目录下所有文件
+
+        :param dirs: 目录路径
+        :param file_type: 目标文件类型
+        """
+
+        res_dirs = dirs or {
+            "cet4": "English-words-cards/CET4/images",
+            "cet6": "English-words-cards/CET6/images",
+            "toefl": "English-words-cards/TOEFL/images",
+            "ielts": "English-words-cards/IELTS/images",
+            "gre": "English-words-cards/GRE/images",
+        }
+
+        for k, v in res_dirs.items():
+            res_dir = self.resource_path.joinpath(v)
+
+            words = set()
+            for f in res_dir.iterdir():
+                if f.is_file() and f.suffix == file_type:
+                    word = f.name.lower().removesuffix(file_type)
+                    # if exist
+                    if word in words:
+                        logger.warning(f"word: {word} already exist in {res_dir}.")
+                    words.add(word)
+
+            logger.debug(f"words: {len(words)}, dir: {res_dir}")
+            # sorted
+            self.words[k] = sorted(words)
+
+        # ===================================================
+
+        # merge words:
+        self.merge_words()
