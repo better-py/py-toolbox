@@ -55,7 +55,7 @@ class WordListTool(object):
         file = self.resource_path.joinpath(res)
 
         # parse
-        words = OrderedDict()
+        words = {}
         with open(file, "r") as fp:
             for line in fp.readlines():
                 line = line.strip()
@@ -88,7 +88,7 @@ class WordListTool(object):
                     logger.warning(f"🍄️ skip line: {len(ret)}, {ret}")
                     continue
                 word, pronounce, meaning = ret
-                word = word.strip("*")
+                word = word.lower().strip("*")  # 小写+去掉*
 
                 words[word] = {
                     "pronounce": pronounce.strip(),
@@ -105,6 +105,10 @@ class WordListTool(object):
         """
 
         dist_file = self.dist_path.joinpath("IELTS.csv")
+
+        # sort:
+        data = OrderedDict(sorted(data.items(), key=lambda x: x[0]))
+
         # save to csv:
         with open(dist_file, "w") as fp:
             for k, v in data.items():
