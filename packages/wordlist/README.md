@@ -86,5 +86,8 @@ words union: cet4_cet6_toefl_ielts_gre = 13003
     - 雅思词汇表
 - ✅️ https://github.com/liurui39660/3000
     - Excel版 再要你命3000
+    - https://github.com/Mad-Devil/3000/tree/dev
+    - 带发音版本
+    - [再要你命3000精简excel版](https://forum.chasedream.com/thread-702976-1-1.html)
 - ✅️ [新东方雅思 绿宝书 词汇词根+联想记忆法 乱序版 TXT格式可导入单词本（带释义）](https://forum.chasedream.com/thread-1382363-1-1.html)
     - 共3500+个词汇, XML 格式
