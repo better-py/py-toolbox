@@ -71,16 +71,10 @@ class WordListTool(object):
                     logger.warning(f"⚠️ skip line: {line}")
                     continue
 
-                # =============
+                # =====================================================
 
-                # if line.count("/") == 2:
-                #     # ok:
-                #     ret = line.split("/", maxsplit=2)
-                #     if len(ret) != 3:
-                #         logger.warning(f"🍄️ skip line: {line}")
-                #         continue
-                #     word, pronounce, meaning = ret
-                #     word = word.strip("*")
+                # 统一音标格式:(不要改 [], 会误改）
+                line = line.replace("{", "/").replace("}", "/")
 
                 # ok:
                 ret = line.split(maxsplit=2)
@@ -93,25 +87,28 @@ class WordListTool(object):
                 #
                 # fix word:
                 #
-                if pronounce.count("/") == 0 and pronounce.count("[") == 0 and pronounce.count("{") == 0:
+                if pronounce.count("/") == 0 and pronounce.count("[") == 0:
                     word = f"{word} {pronounce}".strip("*")  # 短语
                     pronounce = ""
                     if meaning.count("*") > 0:
                         head, tail = meaning.split("*", maxsplit=1)
                         word = f"{word} {head}".strip("*")  # 短语
                         meaning = tail
-
                     logger.warning(f"✅️ fix word: {word}, {pronounce}, {meaning}")
                 elif pronounce.count("/") == 1 and meaning.count("/") > 0:  # 音标切分异常，从词义中提取音标部分
                     p_fix, meaning = meaning.split("/", maxsplit=1)
                     pronounce = f"{pronounce}{p_fix}/"
                     logger.warning(f"⛔️ fix pronounce: {word}, {pronounce}, {meaning}")
 
+                # fix meaning part:
+                if meaning.count("/") == 2:
+                    head, p, tail = meaning.split("/", maxsplit=2)
+                    pronounce = f"{pronounce.rstrip('/')}; {p}/" if pronounce else f"/{p}/"
+                    meaning = f"{head}; {tail}"
+                    logger.warning(f"⛔️ fix meaning: {word}, {pronounce}, {meaning}")
+
                 # 统一音标格式:
-                if pronounce.count("{") > 0:
-                    pronounce = pronounce.replace("{", "/").replace("}", "/")
-                elif pronounce.count("[") > 0:
-                    pronounce = pronounce.replace("[", "/").replace("]", "/")
+                pronounce = pronounce.replace("[", "/").replace("]", "/")
 
                 words[word] = {
                     "pronounce": pronounce.strip(),
