@@ -65,10 +65,10 @@ class WordListTool(object):
                 # clean line:
                 # start with alphabet:
                 if not line[0].isascii():
-                    logger.warning(f"🍄️ skip line: {line}")
+                    logger.warning(f"⚠️ skip line: {line}")
                     continue
                 if line.find("Word List") != -1:
-                    logger.warning(f"🍄️ skip line: {line}")
+                    logger.warning(f"⚠️ skip line: {line}")
                     continue
 
                 # =============
@@ -85,10 +85,33 @@ class WordListTool(object):
                 # ok:
                 ret = line.split(maxsplit=2)
                 if len(ret) != 3:
-                    logger.warning(f"🍄️ skip line: {len(ret)}, {ret}")
+                    logger.warning(f"⚠️ skip line: {len(ret)}, {ret}")
                     continue
                 word, pronounce, meaning = ret
                 word = word.lower().strip("*")  # 小写+去掉*
+
+                #
+                # fix word:
+                #
+                if pronounce.count("/") == 0 and pronounce.count("[") == 0 and pronounce.count("{") == 0:
+                    word = f"{word} {pronounce}".strip("*")  # 短语
+                    pronounce = ""
+                    if meaning.count("*") > 0:
+                        head, tail = meaning.split("*", maxsplit=1)
+                        word = f"{word} {head}".strip("*")  # 短语
+                        meaning = tail
+
+                    logger.warning(f"✅️ fix word: {word}, {pronounce}, {meaning}")
+                elif pronounce.count("/") == 1 and meaning.count("/") > 0:  # 音标切分异常，从词义中提取音标部分
+                    p_fix, meaning = meaning.split("/", maxsplit=1)
+                    pronounce = f"{pronounce}{p_fix}/"
+                    logger.warning(f"⛔️ fix pronounce: {word}, {pronounce}, {meaning}")
+
+                # 统一音标格式:
+                if pronounce.count("{") > 0:
+                    pronounce = pronounce.replace("{", "/").replace("}", "/")
+                elif pronounce.count("[") > 0:
+                    pronounce = pronounce.replace("[", "/").replace("]", "/")
 
                 words[word] = {
                     "pronounce": pronounce.strip(),
@@ -104,7 +127,7 @@ class WordListTool(object):
         :return:
         """
 
-        dist_file = self.dist_path.joinpath("IELTS.csv")
+        dist_file = self.dist_path.joinpath("ielts.csv")  # 雅思词汇表 + 发音 + 词义
 
         # sort:
         data = OrderedDict(sorted(data.items(), key=lambda x: x[0]))
@@ -138,6 +161,8 @@ class WordListTool(object):
 
     def save_files(self, file_suffix: str = None):
         """保存文件
+
+        :param file_suffix: 文件后缀
         :return:
         """
         for k, v in self.words.items():
