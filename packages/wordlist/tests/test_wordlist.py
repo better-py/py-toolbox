@@ -11,3 +11,8 @@ def test_wordlist():
 def test_wordlist2():
     w = WordListTool()
     w.handle2()
+
+
+def test_wordlist3():
+    w = WordListTool()
+    w.handle3()

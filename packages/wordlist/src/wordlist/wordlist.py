@@ -1,5 +1,5 @@
 import json
-
+from collections import OrderedDict
 from loguru import logger
 from src.wordlist.utils import path_jump_to, path_search, traverse_dir
 
@@ -49,6 +49,67 @@ class WordListTool(object):
         """
         pass
 
+    def parse_txt(self):
+
+        res = "IELTS/IELTS Word List.txt"
+        file = self.resource_path.joinpath(res)
+
+        # parse
+        words = OrderedDict()
+        with open(file, "r") as fp:
+            for line in fp.readlines():
+                line = line.strip()
+                if not line:
+                    continue
+
+                # clean line:
+                # start with alphabet:
+                if not line[0].isascii():
+                    logger.warning(f"🍄️ skip line: {line}")
+                    continue
+                if line.find("Word List") != -1:
+                    logger.warning(f"🍄️ skip line: {line}")
+                    continue
+
+                # =============
+
+                # if line.count("/") == 2:
+                #     # ok:
+                #     ret = line.split("/", maxsplit=2)
+                #     if len(ret) != 3:
+                #         logger.warning(f"🍄️ skip line: {line}")
+                #         continue
+                #     word, pronounce, meaning = ret
+                #     word = word.strip("*")
+
+                # ok:
+                ret = line.split(maxsplit=2)
+                if len(ret) != 3:
+                    logger.warning(f"🍄️ skip line: {len(ret)}, {ret}")
+                    continue
+                word, pronounce, meaning = ret
+                word = word.strip("*")
+
+                words[word] = {
+                    "pronounce": pronounce.strip(),
+                    "meaning": meaning.strip(),
+                }
+
+        # ====================
+        logger.debug(f"words: {len(words)}")
+        return words
+
+    def save_csv(self, data: dict):
+        """保存 csv 文件
+        :return:
+        """
+
+        dist_file = self.dist_path.joinpath("IELTS.csv")
+        # save to csv:
+        with open(dist_file, "w") as fp:
+            for k, v in data.items():
+                fp.write(f"{k}, {v['pronounce']}, {v['meaning']}\n")
+
     def parse_vocabulary_by_dirs(self):
         """解析词库文件
 
@@ -66,6 +127,10 @@ class WordListTool(object):
         # parse:
         self.parse_dir_files()
         self.save_files("2")
+
+    def handle3(self):
+        words = self.parse_txt()
+        self.save_csv(words)
 
     def save_files(self, file_suffix: str = None):
         """保存文件
@@ -127,31 +192,6 @@ class WordListTool(object):
 
         self.merge_words()
 
-    def merge_words(self):
-        # merge words:
-        merge_words = set()
-        # add cet4
-        merge_words.update(self.words["cet4"])
-        merge_words.update(self.words["cet6"])
-
-        self.words["cet4_cet6"] = set(sorted(merge_words))
-        logger.debug(f"words union: cet4_cet6 = {len(self.words['cet4_cet6'])}")
-
-        # add toefl
-        merge_words.update(self.words["toefl"])
-        self.words["cet4_cet6_toefl"] = set(sorted(merge_words))
-        logger.debug(f"words union: cet4_cet6_toefl = {len(self.words['cet4_cet6_toefl'])}")
-
-        # add ielts
-        merge_words.update(self.words["ielts"])
-        self.words["cet4_cet6_toefl_ielts"] = set(sorted(merge_words))
-        logger.debug(f"words union: cet4_cet6_toefl_ielts = {len(self.words['cet4_cet6_toefl_ielts'])}")
-
-        # add gre
-        merge_words.update(self.words["gre"])
-        self.words["cet4_cet6_toefl_ielts_gre"] = set(sorted(merge_words))
-        logger.debug(f"words union: cet4_cet6_toefl_ielts_gre = {len(self.words['cet4_cet6_toefl_ielts_gre'])}")
-
     def parse_dirs(self, dirs: str = None, file_type: str = ".png"):
         """解析目录下所有文件
 
@@ -187,3 +227,28 @@ class WordListTool(object):
 
         # merge words:
         self.merge_words()
+
+    def merge_words(self):
+        # merge words:
+        merge_words = set()
+        # add cet4
+        merge_words.update(self.words["cet4"])
+        merge_words.update(self.words["cet6"])
+
+        self.words["cet4_cet6"] = set(sorted(merge_words))
+        logger.debug(f"words union: cet4_cet6 = {len(self.words['cet4_cet6'])}")
+
+        # add toefl
+        merge_words.update(self.words["toefl"])
+        self.words["cet4_cet6_toefl"] = set(sorted(merge_words))
+        logger.debug(f"words union: cet4_cet6_toefl = {len(self.words['cet4_cet6_toefl'])}")
+
+        # add ielts
+        merge_words.update(self.words["ielts"])
+        self.words["cet4_cet6_toefl_ielts"] = set(sorted(merge_words))
+        logger.debug(f"words union: cet4_cet6_toefl_ielts = {len(self.words['cet4_cet6_toefl_ielts'])}")
+
+        # add gre
+        merge_words.update(self.words["gre"])
+        self.words["cet4_cet6_toefl_ielts_gre"] = set(sorted(merge_words))
+        logger.debug(f"words union: cet4_cet6_toefl_ielts_gre = {len(self.words['cet4_cet6_toefl_ielts_gre'])}")
