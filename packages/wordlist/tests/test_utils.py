@@ -28,6 +28,7 @@ def test_path_search_by_folder():
     path_search_by_folder("/Users/dev", folder_name="sbin")
 
 
+@pytest.mark.test_one
 def test_load_dir():
     p = path_jump_to("../../../tmp/")
 

@@ -23,6 +23,14 @@ tasks:
         export PYTHONPATH="."; \
         python3 bin/main.py
 
+  test:one:
+    cmds:
+      # -m 自定义的标记符， 配合 @pytest.mark.my_mark 使用
+      - |
+        poetry run pytest \
+            --capture=no \
+            -m test_one
+
   test:
     cmds:
       # pytest 选项：

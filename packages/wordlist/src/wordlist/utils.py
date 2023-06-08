@@ -3,7 +3,7 @@ from pathlib import Path, PosixPath
 from typing import Union
 
 
-def traverse_dir(path: PosixPath, only_file: bool = True) -> list:
+def traverse_dir(path: Path, only_file: bool = True) -> list:
     """遍历目录下所有文件
 
     :param path: 目录路径
@@ -12,13 +12,17 @@ def traverse_dir(path: PosixPath, only_file: bool = True) -> list:
     """
     logger.debug(f"traverse dir: {path}")
 
+    if not path.exists():
+        logger.warning(f"path: {path} not exists")
+        return []
+
     if only_file:
         return [x for x in path.iterdir() if x.is_file()]
 
     return [x for x in path.iterdir()]
 
 
-def path_search_by_folder(path: Union[str, Path] = ".", folder_name: str = ".git") -> str:
+def path_search_by_folder(path: Path | str = ".", folder_name: str = ".git") -> Path | None:
     """递归搜索包含某个文件夹的根目录
 
     :param path: 搜索开始路径, 类型可以是 str / Path
@@ -33,7 +37,7 @@ def path_search_by_folder(path: Union[str, Path] = ".", folder_name: str = ".git
     git_folder = current_dir / folder_name
     if git_folder.is_dir() and not git_folder.is_symlink():
         logger.debug(f"find {folder_name} in {current_dir}")
-        return str(current_dir)
+        return current_dir
 
     # 如果不存在.git文件夹，继续向上搜索
     parent_dir = current_dir.parent
@@ -46,7 +50,7 @@ def path_search_by_folder(path: Union[str, Path] = ".", folder_name: str = ".git
         return path_search_by_folder(parent_dir, folder_name)
 
 
-def path_search(where: str, path: PosixPath = None):
+def path_search(where: str, path: Path = None) -> Path | None:
     """模糊匹配+路径跳转
 
     :param where: 某个目录名称
@@ -77,7 +81,7 @@ def path_search(where: str, path: PosixPath = None):
     return dist_path
 
 
-def path_jump_to(relative_path: str = "../", from_path: PosixPath = None):
+def path_jump_to(relative_path: str = "../", from_path: Path = None) -> Path:
     """从当前目录调整
 
     :param relative_path: 支持相对路径，"../..", 都是正常处理的
