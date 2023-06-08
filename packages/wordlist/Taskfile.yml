@@ -77,7 +77,7 @@ tasks:
 
   add:
     cmds:
-      - poetry add click setuptools loguru
+      - poetry add click setuptools loguru pyexcel
 
   add:dev:
     cmds:
