@@ -1,5 +1,6 @@
 from loguru import logger
 from pathlib import Path, PosixPath
+from typing import Union
 
 
 def traverse_dir(path: PosixPath, only_file: bool = True) -> list:
@@ -15,6 +16,34 @@ def traverse_dir(path: PosixPath, only_file: bool = True) -> list:
         return [x for x in path.iterdir() if x.is_file()]
 
     return [x for x in path.iterdir()]
+
+
+def path_search_by_folder(path: Union[str, Path] = ".", folder_name: str = ".git") -> str:
+    """递归搜索包含某个文件夹的根目录
+
+    :param path: 搜索开始路径, 类型可以是 str / Path
+    :param folder_name: 指定搜索的文件夹名称, 默认为 `.git/`
+    :return: 匹配到的根目录
+    """
+
+    # 获取当前目录
+    current_dir = Path(path).resolve()
+
+    # 判断当前目录是否存在.git文件夹
+    git_folder = current_dir / folder_name
+    if git_folder.is_dir() and not git_folder.is_symlink():
+        logger.debug(f"find {folder_name} in {current_dir}")
+        return str(current_dir)
+
+    # 如果不存在.git文件夹，继续向上搜索
+    parent_dir = current_dir.parent
+    if parent_dir == current_dir:
+        logger.warning(f"can not find {folder_name} in {path}")
+        # 已经到达根目录，退出递归
+        return None
+    else:
+        # logger.debug(f"search {folder_name} in {parent_dir}")
+        return path_search_by_folder(parent_dir, folder_name)
 
 
 def path_search(where: str, path: PosixPath = None):

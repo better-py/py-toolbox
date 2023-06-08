@@ -1,7 +1,7 @@
 import pytest
 from loguru import logger
 
-from src.wordlist.utils import path_jump_to, path_search, traverse_dir
+from src.wordlist.utils import path_jump_to, path_search, traverse_dir, path_search_by_folder
 
 
 def test_path_jump_to():
@@ -10,6 +10,22 @@ def test_path_jump_to():
 
 def test_path_search():
     path_search("toolbox")
+
+
+def test_path_search_by_folder():
+    for folder in [
+        ".git",
+        "iSpace",
+        "dev",
+        "not-exists"
+    ]:
+        root_dir = path_search_by_folder(".", folder_name=folder)
+        print(f"root dir: {root_dir}")
+
+    #
+    # set path
+    path_search_by_folder("..", folder_name=".git")
+    path_search_by_folder("/Users/dev", folder_name="sbin")
 
 
 def test_load_dir():
@@ -42,4 +58,3 @@ def test_load_dir2():
                 files.add(word)
 
         logger.debug(f"files: {len(files)}, dir: {res_dir}")
-
